@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Tsidat",
+    "slug": "tsidat",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "backgroundColor": "#F7FAF8"
+    },
+    "ios": { "supportsTablet": true },
+    "android": { "package": "com.tsidat.app" },
+    "plugins": ["expo-location", "expo-image-picker"]
+  }
+}

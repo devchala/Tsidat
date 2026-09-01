@@ -1,0 +1,34 @@
+{
+  "name": "tsidat",
+  "version": "0.1.0",
+  "private": true,
+  "description": "\u0983\u12f3\u1275 (Tsidat) - Digital Waste Management, Community Reporting & Smart Collection Platform",
+  "workspaces": [
+    "packages/shared",
+    "packages/backend",
+    "packages/web"
+  ],
+  "scripts": {
+    "dev:backend": "npm run dev --workspace=packages/backend",
+    "dev:web": "npm run dev --workspace=packages/web",
+    "dev": "concurrently -n BACKEND,WEB -c green,cyan \"npm:dev:backend\" \"npm:dev:web\"",
+    "lint": "eslint packages/backend/src packages/web/src --ext .js,.jsx",
+    "format": "prettier --write \"packages/**/src/**/*.{js,jsx,json,css}\"",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "husky": "^9.0.11",
+    "lint-staged": "^15.2.2",
+    "prettier": "^3.2.5"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": ["eslint --fix", "prettier --write"],
+    "*.{json,css,md}": ["prettier --write"]
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

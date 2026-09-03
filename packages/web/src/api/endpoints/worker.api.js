@@ -1,4 +1,4 @@
-import client from '../client';
+import client from '../axiosClient';
 
 // Fetch assigned incidents for the logged-in worker
 export const getAssignedTasks = async () => {

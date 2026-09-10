@@ -143,7 +143,7 @@ export default function ReportWaste() {
           type="submit" 
           style={{ padding: '14px', backgroundColor: '#2d6a4f', color: '#ffffff', border: 'none', borderRadius: '10px', fontSize: '16px', fontWeight: '600', cursor: 'pointer', transition: 'background-color 0.2s', marginTop: '10px' }}
         >
-          Submit Waste Report
+          Submit Incident Report
         </button>
       </form>
     </div>

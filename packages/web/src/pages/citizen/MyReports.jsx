@@ -80,7 +80,7 @@ export default function MyReports() {
           <div key={report.id} style={{ backgroundColor: '#ffffff', padding: '20px', borderRadius: '14px', border: '1px solid #e2e8f0', boxShadow: '0 2px 10px rgba(0,0,0,0.02)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '6px' }}>
-                <h3 style={{ margin: 0, fontSize: '16px', color: '#0f172a' }}>{report.category}</h3>
+                <h3 style={{ margin: 0, fontSize: '16px', color: '#161d2e' }}>{report.category}</h3>
                 <span style={{ fontSize: '12px', color: '#94a3b8', fontWeight: '500' }}>{report.id}</span>
               </div>
               <p style={{ margin: '0 0 6px 0', fontSize: '14px', color: '#475569' }}>📍 {report.location}</p>

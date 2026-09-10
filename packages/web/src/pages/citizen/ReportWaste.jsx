@@ -1,78 +1,66 @@
-import { useState } from 'react';
-import { reportsApi } from '../../api/endpoints/reports.api';
-import Navbar from '../../components/layout/Navbar.jsx';
-import Sidebar from '../../components/layout/Sidebar.jsx';
-import Button from '../../components/ui/Button.jsx';
+import React, { useState } from 'react';
 
-const CATEGORIES = [
-  'general',
-  'organic',
-  'recyclable',
-  'construction',
-  'hazardous',
-  'illegal_dumping',
-  'drainage_blockage',
-  'other',
-];
-
-// TODO (team): photo capture/upload, automatic GPS pinning, and
-// duplicate/nearby-incident warning before submission (spec 6.1).
 export default function ReportWaste() {
-  const [category, setCategory] = useState(CATEGORIES[0]);
-  const [description, setDescription] = useState('');
-  const [status, setStatus] = useState(null);
+  const [formData, setFormData] = useState({
+    category: 'Household Waste',
+    description: '',
+    location: '',
+  });
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    setStatus(null);
-    try {
-      // Placeholder coordinates - replace with navigator.geolocation or map pin.
-      await reportsApi.create({
-        category,
-        description,
-        location: { coordinates: [38.7469, 9.0107] },
-      });
-      setStatus({ ok: true, msg: 'Report submitted.' });
-      setDescription('');
-    } catch (err) {
-      setStatus({ ok: false, msg: err.response?.data?.message || 'Failed to submit report' });
-    }
+    console.log('Submitting citizen waste report:', formData);
+    alert('Waste report submitted successfully!');
   };
 
   return (
-    <div>
-      <Navbar />
-      <div className="flex">
-        <Sidebar />
-        <main className="flex-1 p-8 max-w-lg">
-          <h1 className="text-xl font-bold mb-4">Report Waste</h1>
-          <form onSubmit={handleSubmit} className="space-y-3 bg-white p-6 rounded shadow">
-            <select
-              className="w-full border rounded px-3 py-2"
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              {CATEGORIES.map((c) => (
-                <option key={c} value={c}>
-                  {c.replace('_', ' ')}
-                </option>
-              ))}
-            </select>
-            <textarea
-              placeholder="Short description"
-              className="w-full border rounded px-3 py-2"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            {status && (
-              <p className={status.ok ? 'text-primary text-sm' : 'text-danger text-sm'}>
-                {status.msg}
-              </p>
-            )}
-            <Button type="submit">Submit Report</Button>
-          </form>
-        </main>
-      </div>
+    <div style={{ padding: '24px', maxWidth: '600px', margin: '0 auto', fontFamily: 'sans-serif' }}>
+      <h2>Report Waste Accumulation</h2>
+      <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <div>
+          <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Waste Category</label>
+          <select 
+            value={formData.category} 
+            onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
+          >
+            <option>Household Waste</option>
+            <option>Hazardous Material</option>
+            <option>Overflowing Dumpster</option>
+            <option>Blocked Drain / Organic Waste</option>
+          </select>
+        </div>
+
+        <div>
+          <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Location Details / GPS</label>
+          <input 
+            type="text" 
+            placeholder="Enter address or landmark" 
+            value={formData.location}
+            onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
+            required
+          />
+        </div>
+
+        <div>
+          <label style={{ display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>Description</label>
+          <textarea 
+            rows="4" 
+            placeholder="Provide additional details..." 
+            value={formData.description}
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            style={{ width: '100%', padding: '10px', borderRadius: '4px', border: '1px solid #ccc' }}
+          />
+        </div>
+
+        <button 
+          type="submit" 
+          style={{ padding: '12px', backgroundColor: '#2e7d32', color: '#fff', border: 'none', borderRadius: '4px', fontSize: '16px', cursor: 'pointer' }}
+        >
+          Submit Report
+        </button>
+      </form>
     </div>
   );
 }

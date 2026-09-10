@@ -139,6 +139,12 @@ export default function ReportWaste() {
         </div>
 
         {/* Submit Button */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 0' }}>
+  <input type="checkbox" id="urgent" style={{ width: '16px', height: '16px', accentColor: '#e53e3e' }} />
+  <label htmlFor="urgent" style={{ fontSize: '14px', fontWeight: '600', color: '#c53030', cursor: 'pointer' }}>
+    🚨 Mark as Emergency (Immediate sanitation dispatch required)
+  </label>
+</div>
         <button 
           type="submit" 
           style={{ padding: '14px', backgroundColor: '#2d6a4f', color: '#ffffff', border: 'none', borderRadius: '10px', fontSize: '16px', fontWeight: '600', cursor: 'pointer', transition: 'background-color 0.2s', marginTop: '10px' }}

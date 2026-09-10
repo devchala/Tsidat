@@ -128,15 +128,19 @@ export default function ReportWaste() {
 
         {/* Description Field */}
         <div>
-          <label style={{ display: 'block', marginBottom: '6px', fontWeight: '600', fontSize: '14px', color: '#2d3748' }}>Additional Details</label>
-          <textarea 
-            rows="3" 
-            placeholder="Describe the condition, approximate volume, or access notes for the cleaning crew..." 
-            value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '14px', outline: 'none' }}
-          />
-        </div>
+  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '6px' }}>
+    <label style={{ fontWeight: '600', fontSize: '14px', color: '#2d3748' }}>Additional Details</label>
+    <span style={{ fontSize: '12px', color: '#94a3b8' }}>{formData.description.length}/300 chars</span>
+  </div>
+  <textarea 
+    maxLength={300}
+    rows="3" 
+    placeholder="Describe the condition, approximate volume, or access notes..." 
+    value={formData.description}
+    onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+    style={{ width: '100%', padding: '12px', borderRadius: '8px', border: '1px solid #cbd5e1', fontSize: '14px', outline: 'none' }}
+  />
+</div>
 
         {/* Submit Button */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px', padding: '4px 0' }}>

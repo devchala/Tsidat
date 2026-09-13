@@ -1,75 +1,90 @@
-# React + TypeScript + Vite
+# EcoTrack Admin Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is the production-ready frontend for the EcoTrack Admin Dashboard. It's built with React, Tailwind CSS, and Vite.
 
-Currently, two official plugins are available:
+## 🚀 Getting Started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+To run the application locally:
 
-## React Compiler
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+The application will be accessible at `http://localhost:5173`. 
+Use the following credentials to test the authentication flow:
+- **Email**: admin@ecotrack.local
+- **Password**: admin
 
-## Expanding the ESLint configuration
+## 📁 Project Structure
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-
+```text
+src/
+├── components/     # Reusable UI components (Buttons, Badges, etc.)
+├── context/        # React Context providers (Auth context)
+├── layouts/        # Application layouts (Main sidebar + header wrapper)
+├── mock/           # Mock data used for frontend testing
+├── pages/          # Individual route pages (Dashboard, Reports, Workers, etc.)
+├── services/       # API abstraction layer (Replace mock calls with real fetch/axios here)
+├── utils/          # Helper functions (e.g., Tailwind class merger)
+├── App.jsx         # Main router and route definitions
+└── main.jsx        # React entry point
 ```
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+## 🔌 Connecting to the Backend
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+This application is completely API-ready. It currently uses simulated delays and mock data located in `src/mock/data.js`.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+To connect the real Node.js/Express backend, follow these steps:
 
+1. Open `src/services/api.js`.
+2. Replace the simulated `async/await delay()` functions with actual HTTP calls using `fetch` or `axios`.
+3. Example integration:
+
+```javascript
+// Change this:
+async getReports() {
+  await delay();
+  return mockReports;
+}
+
+// To this:
+async getReports() {
+  const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/admin/reports`, {
+    headers: { Authorization: `Bearer ${localStorage.getItem('ecotrack_token')}` }
+  });
+  return response.data;
+}
 ```
+
+### Expected API Endpoints
+
+The frontend is designed around these logical endpoints:
+
+- `POST /api/auth/login` (Authentication)
+- `GET /api/admin/dashboard` (Dashboard stats)
+- `GET /api/admin/reports` (List all reports)
+- `GET /api/admin/reports/:id` (Get report details)
+- `PATCH /api/admin/reports/:id/status` (Update report status)
+- `GET /api/admin/workers` (List workers)
+- `PATCH /api/admin/workers/:id/approve` (Approve worker)
+- `GET /api/admin/assignments` (Task tracking)
+
+### Environment Variables
+
+When deploying, create a `.env` file at the root:
+
+```env
+VITE_API_BASE_URL=https://api.ecotrack-app.com/api
+```
+
+## 🔐 Authentication & Security
+
+- JWT token is expected upon successful login.
+- It is currently stored in `localStorage` as `ecotrack_token`.
+- `AuthContext.jsx` handles providing user context and protected routes wrapper (`<ProtectedRoute>`).
+- If an API returns `401 Unauthorized`, the interceptor (to be added in `api.js`) should automatically call `logout()` and redirect to `/login`.

@@ -1,12 +1,8 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-<<<<<<< HEAD
-import WorkerDashboard from './pages/worker/WorkerDashboard';
-=======
 import WorkerDashboard from './pages/worker/worker-dashboard';
 import ReportWaste from './pages/citizen/ReportWaste';
 import MyReports from './pages/citizen/MyReports';
->>>>>>> feature/web-user-portal
 
 export default function App() {
   return (

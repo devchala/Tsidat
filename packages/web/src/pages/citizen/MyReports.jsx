@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 export default function MyReports() {
   const [filter, setFilter] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
-  
+
   const reports = [
     { id: 'TRK-9021', category: 'Household Waste', location: 'Kebena, near Church', status: 'Pending', date: '2026-09-09', severity: 'Medium' },
     { id: 'TRK-8812', category: 'Overflowing Dumpster', location: 'Bole Atlas, Main Road', status: 'In Progress', date: '2026-09-08', severity: 'High' },

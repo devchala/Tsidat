@@ -10,7 +10,8 @@ export default function WorkerDashboard() {
       isEmergency: true,
       status: 'Pending',
       description: 'Accumulated waste overflowing onto main pedestrian pathway.',
-      adminNote: 'Priority dispatch. Clear bins and verify clean perimeter.'
+      adminNote: 'Priority dispatch. Clear bins and verify clean perimeter.',
+      resolutionNote: ''
     },
     {
       id: 'REP-7410',
@@ -20,13 +21,20 @@ export default function WorkerDashboard() {
       isEmergency: false,
       status: 'In Progress',
       description: 'Heavy debris clogging main culvert ahead of rain season.',
-      adminNote: 'Inspect drainage flow after clearing debris.'
+      adminNote: 'Inspect drainage flow after clearing debris.',
+      resolutionNote: 'Debris partially removed; completing final rinse.'
     }
   ]);
 
   const updateTaskStatus = (id, newStatus) => {
     setAssignedTasks(prev =>
       prev.map(task => task.id === id ? { ...task, status: newStatus } : task)
+    );
+  };
+
+  const handleNoteChange = (id, note) => {
+    setAssignedTasks(prev =>
+      prev.map(task => task.id === id ? { ...task, resolutionNote: note } : task)
     );
   };
 
@@ -81,6 +89,20 @@ export default function WorkerDashboard() {
               <p style={{ margin: '0 0 6px 0' }}><strong>📍 Location:</strong> {task.location}</p>
               <p style={{ margin: '0 0 6px 0' }}><strong>📝 Description:</strong> {task.description}</p>
               <p style={{ margin: '0', color: '#0284c7' }}><strong>📋 Admin Instruction:</strong> {task.adminNote}</p>
+            </div>
+
+            {/* Resolution Note Input Field */}
+            <div style={{ marginBottom: '12px' }}>
+              <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#64748b', marginBottom: '4px' }}>
+                Field Resolution Note / Verification Details
+              </label>
+              <input 
+                type="text" 
+                placeholder="Enter completion notes or field observations..."
+                value={task.resolutionNote}
+                onChange={(e) => handleNoteChange(task.id, e.target.value)}
+                style={{ width: '100%', padding: '8px 12px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '13px' }}
+              />
             </div>
 
             {/* Status Action Controls */}

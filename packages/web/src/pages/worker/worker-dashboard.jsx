@@ -24,6 +24,12 @@ export default function WorkerDashboard() {
     }
   ]);
 
+  const updateTaskStatus = (id, newStatus) => {
+    setAssignedTasks(prev =>
+      prev.map(task => task.id === id ? { ...task, status: newStatus } : task)
+    );
+  };
+
   return (
     <div style={{ padding: '24px', maxWidth: '850px', margin: '0 auto', fontFamily: 'system-ui, sans-serif', color: '#0f172a' }}>
       {/* Header Banner */}
@@ -55,14 +61,46 @@ export default function WorkerDashboard() {
                   </span>
                 )}
               </div>
+
+              {/* Status Badge */}
+              <span style={{ 
+                padding: '4px 12px', 
+                borderRadius: '20px', 
+                fontSize: '12px', 
+                fontWeight: '600',
+                backgroundColor: task.status === 'Resolved' ? '#dcfce7' : task.status === 'In Progress' ? '#e0f2fe' : '#fef3c7',
+                color: task.status === 'Resolved' ? '#15803d' : task.status === 'In Progress' ? '#0369a1' : '#b45309'
+              }}>
+                {task.status}
+              </span>
             </div>
 
             <h3 style={{ margin: '0 0 12px 0', fontSize: '18px', color: '#1e293b' }}>{task.category}</h3>
 
-            <div style={{ fontSize: '14px', color: '#475569' }}>
+            <div style={{ fontSize: '14px', color: '#475569', marginBottom: '16px' }}>
               <p style={{ margin: '0 0 6px 0' }}><strong>📍 Location:</strong> {task.location}</p>
               <p style={{ margin: '0 0 6px 0' }}><strong>📝 Description:</strong> {task.description}</p>
               <p style={{ margin: '0', color: '#0284c7' }}><strong>📋 Admin Instruction:</strong> {task.adminNote}</p>
+            </div>
+
+            {/* Status Action Controls */}
+            <div style={{ display: 'flex', gap: '8px', borderTop: '1px solid #f1f5f9', paddingTop: '12px' }}>
+              {task.status === 'Pending' && (
+                <button 
+                  onClick={() => updateTaskStatus(task.id, 'In Progress')}
+                  style={{ padding: '8px 16px', backgroundColor: '#0284c7', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: '600', cursor: 'pointer', fontSize: '13px' }}
+                >
+                  Acknowledge & Start
+                </button>
+              )}
+              {task.status === 'In Progress' && (
+                <button 
+                  onClick={() => updateTaskStatus(task.id, 'Resolved')}
+                  style={{ padding: '8px 16px', backgroundColor: '#16a34a', color: '#fff', border: 'none', borderRadius: '6px', fontWeight: '600', cursor: 'pointer', fontSize: '13px' }}
+                >
+                  Mark as Resolved
+                </button>
+              )}
             </div>
 
           </div>

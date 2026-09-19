@@ -13,6 +13,7 @@ export default function WorkerDashboard() {
       description: 'Accumulated waste overflowing onto main pedestrian pathway.',
       adminNote: 'Priority dispatch. Clear bins and verify clean perimeter.',
       resolutionNote: '',
+      proofImage: null,
       updatedAt: 'Just now'
     },
     {
@@ -25,6 +26,7 @@ export default function WorkerDashboard() {
       description: 'Heavy debris clogging main culvert ahead of rain season.',
       adminNote: 'Inspect drainage flow after clearing debris.',
       resolutionNote: 'Debris partially removed; completing final rinse.',
+      proofImage: null,
       updatedAt: '10 mins ago'
     }
   ]);
@@ -42,12 +44,20 @@ export default function WorkerDashboard() {
     );
   };
 
+  const handlePhotoUpload = (id, e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setAssignedTasks(prev =>
+        prev.map(task => task.id === id ? { ...task, proofImage: URL.createObjectURL(file) } : task)
+      );
+    }
+  };
+
   const filteredTasks = assignedTasks.filter(task => {
     if (filter === 'All') return true;
     return task.status === filter;
   });
 
-  // Calculate metrics
   const totalCount = assignedTasks.length;
   const pendingCount = assignedTasks.filter(t => t.status === 'Pending').length;
   const inProgressCount = assignedTasks.filter(t => t.status === 'In Progress').length;
@@ -156,18 +166,37 @@ export default function WorkerDashboard() {
                 <p style={{ margin: '0', color: '#0284c7' }}><strong>📋 Admin Instruction:</strong> {task.adminNote}</p>
               </div>
 
-              {/* Resolution Note Input Field */}
-              <div style={{ marginBottom: '12px' }}>
-                <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#64748b', marginBottom: '4px' }}>
-                  Field Resolution Note / Verification Details
-                </label>
-                <input 
-                  type="text" 
-                  placeholder="Enter completion notes or field observations..."
-                  value={task.resolutionNote}
-                  onChange={(e) => handleNoteChange(task.id, e.target.value)}
-                  style={{ width: '100%', padding: '8px 12px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '13px' }}
-                />
+              {/* Resolution Note & Proof Upload */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', marginBottom: '12px' }}>
+                <div>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#64748b', marginBottom: '4px' }}>
+                    Field Resolution Note / Verification Details
+                  </label>
+                  <input 
+                    type="text" 
+                    placeholder="Enter completion notes or field observations..."
+                    value={task.resolutionNote}
+                    onChange={(e) => handleNoteChange(task.id, e.target.value)}
+                    style={{ width: '100%', padding: '8px 12px', borderRadius: '6px', border: '1px solid #cbd5e1', fontSize: '13px' }}
+                  />
+                </div>
+
+                <div>
+                  <label style={{ display: 'block', fontSize: '12px', fontWeight: '600', color: '#64748b', marginBottom: '4px' }}>
+                    Attach Completion Proof Photo
+                  </label>
+                  <input 
+                    type="file" 
+                    accept="image/*"
+                    onChange={(e) => handlePhotoUpload(task.id, e)}
+                    style={{ fontSize: '12px', color: '#64748b' }}
+                  />
+                  {task.proofImage && (
+                    <div style={{ marginTop: '8px' }}>
+                      <img src={task.proofImage} alt="Resolution proof" style={{ width: '100px', height: '80px', objectFit: 'cover', borderRadius: '6px', border: '1px solid #e2e8f0' }} />
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Status Action Controls */}

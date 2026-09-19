@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 
 export default function WorkerDashboard() {
+  const [filter, setFilter] = useState('All');
   const [assignedTasks, setAssignedTasks] = useState([
     {
       id: 'REP-9021',
@@ -38,6 +39,11 @@ export default function WorkerDashboard() {
     );
   };
 
+  const filteredTasks = assignedTasks.filter(task => {
+    if (filter === 'All') return true;
+    return task.status === filter;
+  });
+
   return (
     <div style={{ padding: '24px', maxWidth: '850px', margin: '0 auto', fontFamily: 'system-ui, sans-serif', color: '#0f172a' }}>
       {/* Header Banner */}
@@ -53,9 +59,31 @@ export default function WorkerDashboard() {
         </span>
       </div>
 
+      {/* Filter Tabs */}
+      <div style={{ display: 'flex', gap: '8px', marginBottom: '20px' }}>
+        {['All', 'Pending', 'In Progress', 'Resolved'].map((tab) => (
+          <button
+            key={tab}
+            onClick={() => setFilter(tab)}
+            style={{
+              padding: '6px 16px',
+              borderRadius: '20px',
+              border: 'none',
+              fontWeight: '600',
+              fontSize: '13px',
+              cursor: 'pointer',
+              backgroundColor: filter === tab ? '#0284c7' : '#f1f5f9',
+              color: filter === tab ? '#ffffff' : '#64748b'
+            }}
+          >
+            {tab}
+          </button>
+        ))}
+      </div>
+
       {/* Task Cards Display */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        {assignedTasks.map((task) => (
+        {filteredTasks.map((task) => (
           <div key={task.id} style={{ backgroundColor: '#ffffff', borderRadius: '12px', padding: '20px', border: '1px solid #cbd5e1', boxShadow: '0 1px 3px rgba(0,0,0,0.05)' }}>
             
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>

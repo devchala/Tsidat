@@ -47,19 +47,42 @@ export default function WorkerDashboard() {
     return task.status === filter;
   });
 
+  // Calculate metrics
+  const totalCount = assignedTasks.length;
+  const pendingCount = assignedTasks.filter(t => t.status === 'Pending').length;
+  const inProgressCount = assignedTasks.filter(t => t.status === 'In Progress').length;
+  const resolvedCount = assignedTasks.filter(t => t.status === 'Resolved').length;
+
   return (
     <div style={{ padding: '24px', maxWidth: '850px', margin: '0 auto', fontFamily: 'system-ui, sans-serif', color: '#0f172a' }}>
       {/* Header Banner */}
-      <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ marginBottom: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <h1 style={{ fontSize: '24px', fontWeight: '700', margin: 0 }}>Worker Dispatch Console</h1>
           <p style={{ color: '#64748b', fontSize: '14px', margin: '4px 0 0 0' }}>
             Field action portal linked to Admin commands & Citizen report tracking.
           </p>
         </div>
-        <span style={{ fontSize: '13px', backgroundColor: '#e2e8f0', padding: '6px 12px', borderRadius: '20px', fontWeight: '600' }}>
-          Active Tasks: {assignedTasks.length}
-        </span>
+      </div>
+
+      {/* Metrics Summary Cards */}
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px', marginBottom: '24px' }}>
+        <div style={{ backgroundColor: '#ffffff', border: '1px solid #e2e8f0', borderRadius: '10px', padding: '12px 16px' }}>
+          <span style={{ fontSize: '12px', color: '#64748b', fontWeight: '600' }}>Total Assigned</span>
+          <div style={{ fontSize: '20px', fontWeight: '700', color: '#0f172a', marginTop: '2px' }}>{totalCount}</div>
+        </div>
+        <div style={{ backgroundColor: '#ffffff', border: '1px solid #fef3c7', borderRadius: '10px', padding: '12px 16px' }}>
+          <span style={{ fontSize: '12px', color: '#b45309', fontWeight: '600' }}>Pending</span>
+          <div style={{ fontSize: '20px', fontWeight: '700', color: '#b45309', marginTop: '2px' }}>{pendingCount}</div>
+        </div>
+        <div style={{ backgroundColor: '#ffffff', border: '1px solid #e0f2fe', borderRadius: '10px', padding: '12px 16px' }}>
+          <span style={{ fontSize: '12px', color: '#0369a1', fontWeight: '600' }}>In Progress</span>
+          <div style={{ fontSize: '20px', fontWeight: '700', color: '#0369a1', marginTop: '2px' }}>{inProgressCount}</div>
+        </div>
+        <div style={{ backgroundColor: '#ffffff', border: '1px solid #dcfce7', borderRadius: '10px', padding: '12px 16px' }}>
+          <span style={{ fontSize: '12px', color: '#15803d', fontWeight: '600' }}>Resolved</span>
+          <div style={{ fontSize: '20px', fontWeight: '700', color: '#15803d', marginTop: '2px' }}>{resolvedCount}</div>
+        </div>
       </div>
 
       {/* Filter Tabs */}

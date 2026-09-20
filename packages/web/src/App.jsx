@@ -1,6 +1,6 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
-import WorkerDashboard from './pages/worker/worker-dashboard';
+import WorkerDashboard from './pages/worker/WorkerDashboard';
 import ReportWaste from './pages/citizen/ReportWaste';
 import MyReports from './pages/citizen/MyReports';
 

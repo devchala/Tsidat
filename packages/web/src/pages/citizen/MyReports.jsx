@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 
 export default function MyReports() {
   const [filter, setFilter] = useState('All');
-const [searchQuery, setSearchQuery] = useState('');D
+  const [searchQuery, setSearchQuery] = useState('');
+
   const reports = [
     { id: 'TRK-9021', category: 'Household Waste', location: 'Kebena, near Church', status: 'Pending', date: '2026-09-09', severity: 'Medium' },
     { id: 'TRK-8812', category: 'Overflowing Dumpster', location: 'Bole Atlas, Main Road', status: 'In Progress', date: '2026-09-08', severity: 'High' },
@@ -11,10 +12,10 @@ const [searchQuery, setSearchQuery] = useState('');D
   ];
 
   const filteredReports = reports.filter(r => {
-  const matchesFilter = filter === 'All' || r.status === filter;
-  const matchesSearch = r.location.toLowerCase().includes(searchQuery.toLowerCase()) || r.category.toLowerCase().includes(searchQuery.toLowerCase());
-  return matchesFilter && matchesSearch;
-});
+    const matchesFilter = filter === 'All' || r.status === filter;
+    const matchesSearch = r.location.toLowerCase().includes(searchQuery.toLowerCase()) || r.category.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesFilter && matchesSearch;
+  });
 
   const getStatusBadge = (status) => {
     const styles = {
@@ -55,7 +56,8 @@ const [searchQuery, setSearchQuery] = useState('');D
           <h3 style={{ margin: 0, fontSize: '22px', color: '#16a34a' }}>{reports.filter(r => r.status === 'Resolved').length}</h3>
         </div>
       </div>
-{/* Search Bar */}
+
+      {/* Search Bar */}
       <input 
         type="text" 
         placeholder="🔍 Search reports by location or waste category..."

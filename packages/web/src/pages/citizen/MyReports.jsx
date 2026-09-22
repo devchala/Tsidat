@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 export default function MyReports() {
   const [filter, setFilter] = useState('All');
+  const [searchQuery, setSearchQuery] = useState('');
 
   const reports = [
     { id: 'TRK-9021', category: 'Household Waste', location: 'Kebena, near Church', status: 'Pending', date: '2026-09-09', severity: 'Medium' },
@@ -10,7 +11,11 @@ export default function MyReports() {
     { id: 'TRK-6105', category: 'Construction Debris', location: 'Kazanchis, Block 4', status: 'Resolved', date: '2026-09-01', severity: 'Low' },
   ];
 
-  const filteredReports = filter === 'All' ? reports : reports.filter(r => r.status === filter);
+  const filteredReports = reports.filter(r => {
+    const matchesFilter = filter === 'All' || r.status === filter;
+    const matchesSearch = r.location.toLowerCase().includes(searchQuery.toLowerCase()) || r.category.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesFilter && matchesSearch;
+  });
 
   const getStatusBadge = (status) => {
     const styles = {
@@ -51,6 +56,15 @@ export default function MyReports() {
           <h3 style={{ margin: 0, fontSize: '22px', color: '#16a34a' }}>{reports.filter(r => r.status === 'Resolved').length}</h3>
         </div>
       </div>
+
+      {/* Search Bar */}
+      <input 
+        type="text" 
+        placeholder="🔍 Search reports by location or waste category..."
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        style={{ width: '100%', padding: '12px 16px', borderRadius: '10px', border: '1px solid #cbd5e1', marginBottom: '16px', fontSize: '14px', outline: 'none' }}
+      />
 
       {/* Filter Tabs */}
       <div style={{ display: 'flex', gap: '8px', marginBottom: '16px' }}>

@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AuthContext } from '../context/AuthContext';
 import LoginScreen from '../screens/auth/LoginScreen';
 import CitizenHomeScreen from '../screens/citizen/HomeScreen';
+import ReportIssueScreen from '../screens/citizen/ReportIssueScreen';
 import WorkerDashboardScreen from '../screens/worker/DashboardScreen';
 
 const Stack = createNativeStackNavigator();
@@ -40,15 +41,26 @@ export default function RootNavigator() {
           />
         ) : (
           // Citizen Protected Flow
-          <Stack.Screen
-            name="CitizenHome"
-            component={CitizenHomeScreen}
-            options={{
-              title: 'Citizen Portal',
-              headerStyle: { backgroundColor: '#2e7d32' },
-              headerTintColor: '#ffffff',
-            }}
-          />
+          <>
+            <Stack.Screen
+              name="CitizenHome"
+              component={CitizenHomeScreen}
+              options={{
+                title: 'Citizen Portal',
+                headerStyle: { backgroundColor: '#2e7d32' },
+                headerTintColor: '#ffffff',
+              }}
+            />
+            <Stack.Screen
+              name="ReportIssue"
+              component={ReportIssueScreen}
+              options={{
+                title: 'Report New Issue',
+                headerStyle: { backgroundColor: '#2e7d32' },
+                headerTintColor: '#ffffff',
+              }}
+            />
+          </>
         )}
       </Stack.Navigator>
     </NavigationContainer>

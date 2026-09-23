@@ -1,38 +1,88 @@
-import { createContext, useState, useEffect } from 'react';
+import React, { createContext, useReducer, useMemo, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import apiClient from '../api/client';
 
-export const AuthContext = createContext(null);
+export const AuthContext = createContext();
+
+const initialAuthState = {
+  isLoading: true,
+  isSignout: false,
+  userToken: null,
+  userRole: null, // 'citizen' | 'worker' | null
+};
+
+function authReducer(prevState, action) {
+  switch (action.type) {
+    case 'RESTORE_TOKEN':
+      return {
+        ...prevState,
+        userToken: action.token,
+        userRole: action.role,
+        isLoading: false,
+      };
+    case 'SIGN_IN':
+      return {
+        ...prevState,
+        isSignout: false,
+        userToken: action.token,
+        userRole: action.role,
+      };
+    case 'SIGN_OUT':
+      return {
+        ...prevState,
+        isSignout: true,
+        userToken: null,
+        userRole: null,
+      };
+    default:
+      return prevState;
+  }
+}
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [state, dispatch] = useReducer(authReducer, initialAuthState);
 
   useEffect(() => {
-    AsyncStorage.getItem('accessToken').then((token) => {
-      if (!token) return setLoading(false);
-      apiClient
-        .get('/auth/me')
-        .then(({ data }) => setUser(data.user))
-        .finally(() => setLoading(false));
-    });
+    const bootstrapAsync = async () => {
+      let userToken = null;
+      let userRole = null;
+
+      try {
+        userToken = await AsyncStorage.getItem('userToken');
+        userRole = await AsyncStorage.getItem('userRole');
+      } catch (e) {
+        console.error('Failed to restore session token', e);
+      }
+
+      dispatch({ type: 'RESTORE_TOKEN', token: userToken, role: userRole });
+    };
+
+    bootstrapAsync();
   }, []);
 
-  const login = async (email, password) => {
-    const { data } = await apiClient.post('/auth/login', { email, password });
-    await AsyncStorage.setItem('accessToken', data.accessToken);
-    await AsyncStorage.setItem('refreshToken', data.refreshToken);
-    setUser(data.user);
-  };
-
-  const logout = async () => {
-    await AsyncStorage.clear();
-    setUser(null);
-  };
-
-  return (
-    <AuthContext.Provider value={{ user, loading, login, logout }}>
-      {children}
-    </AuthContext.Provider>
+  const authContext = useMemo(
+    () => ({
+      signIn: async ({ token, role }) => {
+        try {
+          await AsyncStorage.setItem('userToken', token);
+          await AsyncStorage.setItem('userRole', role);
+          dispatch({ type: 'SIGN_IN', token, role });
+        } catch (e) {
+          console.error('Failed to save session token', e);
+        }
+      },
+      signOut: async () => {
+        try {
+          await AsyncStorage.removeItem('userToken');
+          await AsyncStorage.removeItem('userRole');
+          dispatch({ type: 'SIGN_OUT' });
+        } catch (e) {
+          console.error('Failed to clear session storage', e);
+        }
+      },
+      authState: state,
+    }),
+    [state]
   );
+
+  return <AuthContext.Provider value={authContext}>{children}</AuthContext.Provider>;
 }

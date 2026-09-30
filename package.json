@@ -2,7 +2,7 @@
   "name": "tsidat",
   "version": "0.1.0",
   "private": true,
-  "description": "\u0983\u12f3\u1275 (Tsidat) - Digital Waste Management, Community Reporting & Smart Collection Platform",
+  "description": "ঃዳት (Tsidat) - Digital Waste Management, Community Reporting & Smart Collection Platform",
   "workspaces": [
     "packages/shared",
     "packages/backend",
@@ -25,10 +25,18 @@
     "prettier": "^3.2.5"
   },
   "lint-staged": {
-    "*.{js,jsx}": ["eslint --fix", "prettier --write"],
-    "*.{json,css,md}": ["prettier --write"]
+    "*.{js,jsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css,md}": [
+      "prettier --write"
+    ]
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@react-native-async-storage/async-storage": "^3.1.1"
   }
 }

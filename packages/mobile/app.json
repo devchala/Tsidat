@@ -8,8 +8,16 @@
     "splash": {
       "backgroundColor": "#F7FAF8"
     },
-    "ios": { "supportsTablet": true },
-    "android": { "package": "com.tsidat.app" },
-    "plugins": ["expo-location", "expo-image-picker"]
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "package": "com.tsidat.app"
+    },
+    "plugins": [
+      "expo-location",
+      "expo-image-picker",
+      "expo-status-bar"
+    ]
   }
 }

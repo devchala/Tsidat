@@ -37,7 +37,7 @@ function Incident() {
         supabase.from("reports").select("id,reference,description,image_path,status,created_at").eq("incident_id", id).order("created_at"),
         supabase.from("assignments").select("*").eq("incident_id", id).order("assigned_at", { ascending: false }),
         supabase.from("status_history").select("id,to_status,note,created_at,actor_role").eq("incident_id", id).is("report_id", null).order("created_at"),
-        supabase.from("profiles").select("id,display_name,area,available,account_status").eq("worker_status", "approved").eq("account_status", "active"),
+        supabase.from("profiles").select("id,display_name,area,available,account_status").eq("worker_status", "approved").eq("account_status", "active").eq("location_id", inc.location_id ?? "00000000-0000-0000-0000-000000000000"),
         supabase.from("assignments").select("worker_id,status"),
       ]);
       const load = new Map<string, { active: number; done: number }>();

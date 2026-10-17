@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { errMsg } from "@/lib/tsidat";
+import { LocationSelect } from "@/components/tsidat/LocationSelect";
+import { useLocations } from "@/lib/locations";
 
 const search = z.object({ mode: z.enum(["signin", "signup", "worker", "forgot"]).optional() });
 
@@ -33,7 +35,7 @@ const signupSchema = z.object({
   phone: z.string().trim().max(30).optional(),
 });
 const workerSchema = signupSchema.extend({
-  area: z.string().trim().min(2, "Enter your service area").max(100),
+  location_id: z.string().uuid("Choose your service location"),
   national_id: z.string().trim().min(4, "Enter your ID number").max(40),
   experience: z.string().trim().max(500).optional(),
 });
@@ -43,7 +45,8 @@ function AuthPage() {
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState<string | null>(null);
-  const [f, setF] = useState({ display_name: "", email: "", password: "", phone: "", area: "", national_id: "", experience: "" });
+  const locations = useLocations();
+  const [f, setF] = useState({ display_name: "", email: "", password: "", phone: "", location_id: "", national_id: "", experience: "" });
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF({ ...f, [k]: e.target.value });
 
   useEffect(() => {
@@ -103,7 +106,7 @@ function AuthPage() {
           <p className="font-display text-4xl font-bold leading-tight">Every report has evidence. Every update explains what's next.</p>
           <p className="mt-4 opacity-80">Residents, verified workers and administrators — one platform.</p>
         </div>
-        <p className="text-sm opacity-60">Admin and planner accounts are granted by administrators.</p>
+        <p className="text-sm opacity-60">Local admin and planner accounts are granted by the superadmin.</p>
       </div>
       <div className="flex items-center justify-center p-6">
         <div className="w-full max-w-md">
@@ -124,7 +127,7 @@ function AuthPage() {
               )}
               {mode === "worker" && (
                 <>
-                  <Field label="Service area / sub-city"><Input value={f.area} onChange={set("area")} required maxLength={100} /></Field>
+                  <Field label="Service location"><LocationSelect value={f.location_id} onChange={(location_id) => setF({ ...f, location_id })} />{locations.data?.length === 0 && <p className="text-sm text-muted-foreground">No service locations yet. Contact your municipality.</p>}</Field>
                   <Field label="National ID or employee number"><Input value={f.national_id} onChange={set("national_id")} required maxLength={40} /></Field>
                   <Field label="Experience (optional)"><Textarea value={f.experience} onChange={set("experience")} maxLength={500} /></Field>
                 </>

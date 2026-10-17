@@ -13,7 +13,7 @@ import { AdminOnly } from "@/components/tsidat/AdminOnly";
 
 export const Route = createFileRoute("/_authenticated/planner")({
   head: () => ({ meta: [{ title: "Analytics — Tsidat" }, { name: "description", content: "Waste trends, hotspots and performance." }] }),
-  component: () => <AdminOnly roles={["admin", "planner"]}><Planner /></AdminOnly>,
+  component: () => <AdminOnly roles={["admin", "superadmin", "planner"]}><Planner /></AdminOnly>,
 });
 
 type Summary = {

@@ -2,7 +2,7 @@ import { Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-route
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import {
-  Bell, LayoutDashboard, FileText, Plus, Users, ShieldCheck, ScrollText, BarChart3, ClipboardList, UserRound, LogOut, Leaf, Loader2,
+  Bell, LayoutDashboard, FileText, Plus, Users, ShieldCheck, ScrollText, BarChart3, ClipboardList, UserRound, LogOut, Leaf, Loader2, MapPin,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useMe } from "@/lib/auth";
@@ -58,14 +58,15 @@ export function AppShell() {
 
   const r = me.roles;
   const items: NavItem[] = [];
-  if (r.includes("admin")) items.push(
+  const superadmin = r.includes("superadmin");
+  if (superadmin || r.includes("admin")) items.push(
     { to: "/admin", label: "Command center", icon: LayoutDashboard, exact: true },
     { to: "/admin/reports", label: "Reports", icon: FileText },
     { to: "/admin/workers", label: "Workers", icon: ShieldCheck },
-    { to: "/admin/users", label: "Users", icon: Users },
     { to: "/admin/audit", label: "Audit log", icon: ScrollText },
   );
-  if (r.includes("admin") || r.includes("planner")) items.push({ to: "/planner", label: "Analytics", icon: BarChart3 });
+  if (superadmin) items.push({ to: "/admin/locations", label: "Locations & admins", icon: MapPin }, { to: "/admin/users", label: "Users", icon: Users });
+  if (superadmin || r.includes("admin") || r.includes("planner")) items.push({ to: "/planner", label: "Analytics", icon: BarChart3 });
   if (r.includes("worker")) items.push({ to: "/worker", label: "My tasks", icon: ClipboardList });
   if (r.includes("resident")) items.push(
     { to: "/resident", label: "My reports", icon: FileText, exact: true },
@@ -101,16 +102,18 @@ export function AppShell() {
         <div className="border-t border-sidebar-border p-4">
           <p className="truncate text-sm font-semibold">{me.profile.display_name}</p>
           <p className="truncate text-xs opacity-70">{me.roles.join(" · ")}</p>
+          <p className="mt-1 text-xs opacity-70">{superadmin ? "All locations" : me.locations.map((l) => l.name).join(" · ") || me.profile.area}</p>
           <button onClick={signOut} className="mt-3 flex items-center gap-2 text-sm opacity-80 hover:opacity-100"><LogOut className="h-4 w-4" /> Sign out</button>
         </div>
       </aside>
 
-      <header className="sticky top-0 z-20 flex items-center justify-between border-b bg-card/95 px-4 py-3 backdrop-blur md:hidden">
+      <header className="sticky top-0 z-20 flex flex-wrap items-center justify-between gap-2 border-b bg-card/95 px-4 py-3 backdrop-blur md:hidden">
         <Link to="/" className="font-display text-lg font-bold">Tsidat <span className="text-primary">ጽዳት</span></Link>
         <div className="flex items-center gap-2">
           <Link to="/notifications" className="relative p-2"><Bell className="h-5 w-5" />{!!unread.data && <span className="absolute right-1 top-1 h-2 w-2 rounded-full bg-destructive" />}</Link>
           <button onClick={signOut} className="p-2" aria-label="Sign out"><LogOut className="h-5 w-5" /></button>
         </div>
+        <nav className="flex w-full gap-4 overflow-x-auto pb-1 text-xs">{items.map((i) => <Link key={i.to} to={i.to} className={cn("shrink-0", active(i) ? "font-semibold text-primary" : "text-muted-foreground")}>{i.label}</Link>)}</nav>
       </header>
 
       <main className="flex-1 px-4 pb-24 pt-6 md:px-8 md:pb-10">

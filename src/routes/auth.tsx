@@ -53,8 +53,7 @@ function AuthPage() {
   }, [navigate]);
 
   function goBack() {
-    if (window.history.length > 1) window.history.back();
-    else navigate({ to: "/" });
+    navigate({ to: "/" });
   }
 
   async function submit(e: React.FormEvent) {

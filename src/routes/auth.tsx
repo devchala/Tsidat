@@ -67,12 +67,13 @@ function AuthPage() {
         const parsed = schema.safeParse(f);
         if (!parsed.success) throw new Error(parsed.error.issues[0].message);
         const { email, password, ...meta } = parsed.data;
-        const { error } = await supabase.auth.signUp({
+        const { data: su, error } = await supabase.auth.signUp({
           email, password,
           options: { emailRedirectTo: window.location.origin + "/dashboard", data: { ...meta, account_type: mode === "worker" ? "worker" : "resident" } },
         });
         if (error) throw error;
-        setSent("Check your email to confirm your account, then sign in.");
+        if (su.session) navigate({ to: "/dashboard", replace: true });
+        else setSent("Account created. You can now sign in.");
       }
     } catch (err) {
       toast.error(errMsg(err));

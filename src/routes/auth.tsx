@@ -4,7 +4,6 @@ import { z } from "zod";
 import { toast } from "sonner";
 import { ArrowLeft, Leaf, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import { lovable } from "@/integrations/lovable";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -90,11 +89,6 @@ function AuthPage() {
     }
   }
 
-  async function google() {
-    const r = await lovable.auth.signInWithOAuth("google", { redirect_uri: window.location.origin + "/auth" });
-    if (r.error) toast.error(errMsg(r.error));
-    else if (!r.redirected) navigate({ to: "/dashboard", replace: true });
-  }
 
   const titles = { signin: "Welcome back", signup: "Create resident account", worker: "Apply as a collection worker", forgot: "Reset your password" };
 
@@ -135,9 +129,6 @@ function AuthPage() {
               <Field label="Email"><Input type="email" value={f.email} onChange={set("email")} required maxLength={255} autoComplete="email" /></Field>
               {mode !== "forgot" && <Field label="Password"><Input type="password" value={f.password} onChange={set("password")} required minLength={mode === "signin" ? 1 : 8} autoComplete={mode === "signin" ? "current-password" : "new-password"} /></Field>}
               <Button type="submit" className="w-full" size="lg" disabled={busy}>{busy && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{mode === "signin" ? "Sign in" : mode === "forgot" ? "Send reset link" : mode === "worker" ? "Submit application" : "Create account"}</Button>
-              {(mode === "signin" || mode === "signup") && (
-                <Button type="button" variant="outline" className="w-full" onClick={google}>Continue with Google</Button>
-              )}
             </form>
           )}
           <div className="mt-6 flex flex-wrap gap-x-4 gap-y-2 text-sm">

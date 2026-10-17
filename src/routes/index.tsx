@@ -1,5 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { Camera, MapPin, Truck, ShieldCheck, BarChart3, ArrowRight, Leaf } from "lucide-react";
+import { Camera, MapPin, Truck, ShieldCheck, BarChart3, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import hero from "@/assets/hero.jpg";
 
@@ -29,7 +29,7 @@ function Landing() {
     <div className="min-h-screen">
       <header className="mx-auto flex max-w-6xl items-center justify-between px-5 py-5">
         <span className="flex items-center gap-2 font-display text-xl font-bold">
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-primary text-primary-foreground"><Leaf className="h-5 w-5" /></span>
+          <img src="/logo.png" alt="" className="h-9 w-auto" />
           Tsidat <span className="text-primary">ጽዳት</span>
         </span>
         <div className="flex gap-2">

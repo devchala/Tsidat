@@ -2,7 +2,7 @@ import { Link, Outlet, useNavigate, useRouterState } from "@tanstack/react-route
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useEffect } from "react";
 import {
-  Bell, LayoutDashboard, FileText, Plus, Users, ShieldCheck, ScrollText, BarChart3, ClipboardList, UserRound, LogOut, Leaf, Loader2, MapPin,
+  Bell, LayoutDashboard, FileText, Plus, Users, ShieldCheck, ScrollText, BarChart3, ClipboardList, UserRound, LogOut, Loader2, MapPin,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useMe } from "@/lib/auth";
@@ -87,7 +87,7 @@ export function AppShell() {
     <div className="min-h-screen md:flex">
       <aside className="hidden w-64 shrink-0 flex-col bg-sidebar text-sidebar-foreground md:flex md:sticky md:top-0 md:h-screen">
         <Link to="/" className="flex items-center gap-2 px-5 py-6">
-          <span className="grid h-9 w-9 place-items-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground"><Leaf className="h-5 w-5" /></span>
+          <img src="/logo.png" alt="" className="h-9 w-auto" />
           <span className="font-display text-xl font-bold">Tsidat <span className="text-sidebar-primary">ጽዳት</span></span>
         </Link>
         <nav className="flex-1 space-y-1 px-3">

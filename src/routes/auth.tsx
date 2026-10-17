@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import { ArrowLeft, Leaf, Loader2 } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -94,7 +94,7 @@ function AuthPage() {
   return (
     <div className="grid min-h-screen md:grid-cols-2">
       <div className="hidden flex-col justify-between bg-hero p-10 text-primary-foreground md:flex">
-        <Link to="/" className="flex items-center gap-2 font-display text-xl font-bold"><Leaf className="h-6 w-6 text-accent" /> Tsidat ጽዳት</Link>
+        <Link to="/" className="flex items-center gap-2 font-display text-xl font-bold"><img src="/logo.png" alt="" className="h-9 w-auto" /> Tsidat ጽዳት</Link>
         <div>
           <p className="font-display text-4xl font-bold leading-tight">Every report has evidence. Every update explains what's next.</p>
           <p className="mt-4 opacity-80">Residents, verified workers and administrators — one platform.</p>

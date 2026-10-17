@@ -12,8 +12,8 @@ import { PointsMap } from "@/components/tsidat/Maps";
 import { AdminOnly } from "@/components/tsidat/AdminOnly";
 
 export const Route = createFileRoute("/_authenticated/planner")({
-  head: () => ({ meta: [{ title: "Analytics — Tsidat" }, { name: "description", content: "Waste trends, hotspots and performance." }] }),
-  component: () => <AdminOnly roles={["admin", "planner"]}><Planner /></AdminOnly>,
+  head: () => ({ meta: [{ title: "Analytics — Tsidat" }, { name: "description", content: "Waste trends, hotspots and performance." }, { property: "og:title", content: "Analytics — Tsidat" }, { property: "og:description", content: "Waste trends, hotspots and performance." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
+  component: () => <AdminOnly roles={["admin", "superadmin", "planner"]}><Planner /></AdminOnly>,
 });
 
 type Summary = {

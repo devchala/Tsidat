@@ -12,7 +12,7 @@ import { Empty, PageHeader, Panel, PriorityBadge, StatusBadge } from "@/componen
 import { PointsMap } from "@/components/tsidat/Maps";
 
 export const Route = createFileRoute("/_authenticated/worker/")({
-  head: () => ({ meta: [{ title: "My tasks — Tsidat" }, { name: "description", content: "Assigned collection tasks." }] }),
+  head: () => ({ meta: [{ title: "My tasks — Tsidat" }, { name: "description", content: "Assigned collection tasks." }, { property: "og:title", content: "My tasks — Tsidat" }, { property: "og:description", content: "Assigned collection tasks." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: WorkerHome,
 });
 

@@ -11,8 +11,8 @@ import { PageHeader } from "@/components/tsidat/bits";
 import { AdminOnly } from "@/components/tsidat/AdminOnly";
 
 export const Route = createFileRoute("/_authenticated/admin/users")({
-  head: () => ({ meta: [{ title: "Users — Tsidat admin" }, { name: "description", content: "Manage users and roles." }] }),
-  component: () => <AdminOnly><Users /></AdminOnly>,
+  head: () => ({ meta: [{ title: "Users — Tsidat admin" }, { name: "description", content: "Manage users and roles." }, { property: "og:title", content: "Users — Tsidat admin" }, { property: "og:description", content: "Manage users and roles." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
+  component: () => <AdminOnly roles={["superadmin"]}><Users /></AdminOnly>,
 });
 
 function Users() {
@@ -46,7 +46,7 @@ function Users() {
   const rows = q.data?.filter((u) => u.display_name.toLowerCase().includes(search.toLowerCase())) ?? [];
   return (
     <div>
-      <PageHeader title="Users" subtitle="Grant planner or admin roles through this trusted process." actions={<Input placeholder="Search name" value={search} onChange={(e) => setSearch(e.target.value)} className="w-56" />} />
+      <PageHeader title="Users" subtitle="Account access and planner roles" actions={<Input placeholder="Search name" value={search} onChange={(e) => setSearch(e.target.value)} className="w-56" />} />
       <div className="overflow-x-auto rounded-xl border bg-card">
         <table className="w-full text-sm">
           <thead className="bg-muted text-left text-xs uppercase text-muted-foreground"><tr><th className="p-3">Name</th><th className="p-3">Roles</th><th className="p-3">Status</th><th className="p-3">Actions</th></tr></thead>
@@ -59,7 +59,7 @@ function Users() {
                   <td className="p-3">{u.roles.join(", ")}{u.worker_status !== "none" && <span className="text-xs text-muted-foreground"> (worker: {u.worker_status})</span>}</td>
                   <td className="p-3">{u.account_status}</td>
                   <td className="space-x-1 p-3">
-                    {!self && (["planner", "admin"] as AppRole[]).map((r) => (
+                    {!self && (["planner"] as AppRole[]).map((r) => (
                       <Button key={r} size="sm" variant="outline" onClick={() => role(u.id, r, !u.roles.includes(r))}>{u.roles.includes(r) ? `Revoke ${r}` : `Make ${r}`}</Button>
                     ))}
                     {!self && (u.account_status === "active"

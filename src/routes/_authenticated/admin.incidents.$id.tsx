@@ -12,9 +12,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { PageHeader, Panel, PriorityBadge, SignedImage, StatusBadge, Timeline } from "@/components/tsidat/bits";
 import { PointsMap } from "@/components/tsidat/Maps";
 import { AdminOnly } from "@/components/tsidat/AdminOnly";
+import { useMe } from "@/lib/auth";
+import { isSuperadmin, useLocations } from "@/lib/locations";
+import { LocationSelect } from "@/components/tsidat/LocationSelect";
 
 export const Route = createFileRoute("/_authenticated/admin/incidents/$id")({
-  head: () => ({ meta: [{ title: "Incident — Tsidat admin" }, { name: "description", content: "Manage an operational incident." }] }),
+  head: () => ({ meta: [{ title: "Incident — Tsidat admin" }, { name: "description", content: "Manage an operational incident." }, { property: "og:title", content: "Incident — Tsidat admin" }, { property: "og:description", content: "Manage an operational incident." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: () => <AdminOnly><Incident /></AdminOnly>,
 });
 
@@ -23,6 +26,9 @@ const LIVE = ["assigned", "en_route", "in_progress", "awaiting_verification"];
 function Incident() {
   const { id } = Route.useParams();
   const qc = useQueryClient();
+  const { data: me } = useMe();
+  const locations = useLocations();
+  const [location, setLocation] = useState("");
   const [note, setNote] = useState("");
   const [reason, setReason] = useState("");
   const [prio, setPrio] = useState<PriorityLevel | "">("");
@@ -37,7 +43,7 @@ function Incident() {
         supabase.from("reports").select("id,reference,description,image_path,status,created_at").eq("incident_id", id).order("created_at"),
         supabase.from("assignments").select("*").eq("incident_id", id).order("assigned_at", { ascending: false }),
         supabase.from("status_history").select("id,to_status,note,created_at,actor_role").eq("incident_id", id).is("report_id", null).order("created_at"),
-        supabase.from("profiles").select("id,display_name,area,available,account_status").eq("worker_status", "approved").eq("account_status", "active"),
+        supabase.from("profiles").select("id,display_name,area,available,account_status").eq("worker_status", "approved").eq("account_status", "active").eq("location_id", inc.location_id ?? "00000000-0000-0000-0000-000000000000"),
         supabase.from("assignments").select("worker_id,status"),
       ]);
       const load = new Map<string, { active: number; done: number }>();
@@ -77,6 +83,7 @@ function Incident() {
   return (
     <div>
       <PageHeader title={`${inc.reference} · ${categoryLabel(inc.category)}`} subtitle={inc.priority_reason ?? undefined} actions={<div className="flex gap-2"><StatusBadge status={inc.status} /><PriorityBadge level={inc.priority_level} /></div>} />
+      <div className="mb-6 flex flex-wrap items-center gap-3 border-b pb-4"><p className="text-sm font-semibold">Collection location: {locations.data?.find((l) => l.id === inc.location_id)?.name ?? "Unassigned"}</p>{isSuperadmin(me?.roles ?? []) && <div className="flex w-full gap-2 sm:w-80"><LocationSelect value={location} onChange={setLocation} /><Button variant="outline" disabled={!location || busy} onClick={() => run(() => supabase.rpc("superadmin_route_incident", { _incident: id, _location: location }), "Incident location updated")}>Save location</Button></div>}</div>
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
           <PointsMap height="h-64" points={[{ id: inc.id, lat: inc.latitude, lng: inc.longitude, priority: inc.priority_level, title: inc.reference }]} />

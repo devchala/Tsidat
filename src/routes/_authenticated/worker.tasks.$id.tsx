@@ -12,7 +12,7 @@ import { PageHeader, Panel, PriorityBadge, SignedImage, StatusBadge, Timeline } 
 import { PointsMap } from "@/components/tsidat/Maps";
 
 export const Route = createFileRoute("/_authenticated/worker/tasks/$id")({
-  head: () => ({ meta: [{ title: "Task — Tsidat" }, { name: "description", content: "Collection task details." }] }),
+  head: () => ({ meta: [{ title: "Task — Tsidat" }, { name: "description", content: "Collection task details." }, { property: "og:title", content: "Task — Tsidat" }, { property: "og:description", content: "Collection task details." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: TaskDetail,
 });
 

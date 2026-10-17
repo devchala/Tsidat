@@ -5,7 +5,7 @@ import { Empty, PageHeader } from "@/components/tsidat/bits";
 import { AdminOnly } from "@/components/tsidat/AdminOnly";
 
 export const Route = createFileRoute("/_authenticated/admin/audit")({
-  head: () => ({ meta: [{ title: "Audit log — Tsidat admin" }, { name: "description", content: "Who did what, and when." }] }),
+  head: () => ({ meta: [{ title: "Audit log — Tsidat admin" }, { name: "description", content: "Who did what, and when." }, { property: "og:title", content: "Audit log — Tsidat admin" }, { property: "og:description", content: "Who did what, and when." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: () => <AdminOnly><Audit /></AdminOnly>,
 });
 

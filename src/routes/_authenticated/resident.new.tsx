@@ -13,9 +13,10 @@ import { Textarea } from "@/components/ui/textarea";
 import { PageHeader, Panel, StatusBadge } from "@/components/tsidat/bits";
 import { PickerMap } from "@/components/tsidat/Maps";
 import { cn } from "@/lib/utils";
+import { LocationSelect } from "@/components/tsidat/LocationSelect";
 
 export const Route = createFileRoute("/_authenticated/resident/new")({
-  head: () => ({ meta: [{ title: "Report waste — Tsidat" }, { name: "description", content: "Submit a new waste report." }] }),
+  head: () => ({ meta: [{ title: "Report waste — Tsidat" }, { name: "description", content: "Submit a new waste report." }, { property: "og:title", content: "Report waste — Tsidat" }, { property: "og:description", content: "Submit a new waste report." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: NewReport,
 });
 
@@ -38,6 +39,7 @@ function NewReport() {
   const [description, setDescription] = useState("");
   const [pos, setPos] = useState<[number, number] | null>(null);
   const [locDesc, setLocDesc] = useState("");
+  const [location, setLocation] = useState("");
   const [geoBusy, setGeoBusy] = useState(false);
   const [geoMsg, setGeoMsg] = useState<string | null>(null);
   const [nearby, setNearby] = useState<Nearby[] | null>(null);
@@ -72,13 +74,14 @@ function NewReport() {
     const v = schema.safeParse({ category, description, location_description: locDesc, lat: pos?.[0], lng: pos?.[1] });
     if (!file) return toast.error("Add a photo first");
     if (!v.success) return toast.error(v.error.issues[0].message);
-    const { data } = await supabase.rpc("nearby_reports", { _lat: pos![0], _lng: pos![1] });
+    if (!pos || !location) return toast.error("Choose the report location");
+    const { data } = await supabase.rpc("location_nearby_reports", { _lat: pos[0], _lng: pos[1], _location: location });
     setNearby((data as Nearby[]) ?? []);
     setStep(4);
   }
 
   async function submit() {
-    if (!file || !pos || !category || !me) return;
+    if (!file || !pos || !category || !me || !location) return;
     setBusy(true);
     try {
       const ext = file.type.split("/")[1];
@@ -87,7 +90,7 @@ function NewReport() {
       if (up.error) throw up.error;
       const { data, error } = await supabase.from("reports").insert({
         resident_id: me.id, category, description: description.trim(), image_path: path,
-        latitude: pos[0], longitude: pos[1], location_description: locDesc.trim() || null,
+        latitude: pos[0], longitude: pos[1], location_description: locDesc.trim() || null, location_id: location,
       }).select("id,reference,status").single();
       if (error) throw error;
       setDone(data);
@@ -108,7 +111,7 @@ function NewReport() {
           {preview && <img src={preview} alt="Submitted" className="mx-auto mt-4 aspect-video w-full rounded-lg object-cover" />}
           <div className="mt-4 space-y-1 text-left text-sm">
             <p><b>Category:</b> {categoryLabel(category)}</p>
-            <p><b>Location:</b> {locDesc || `${pos![0].toFixed(5)}, ${pos![1].toFixed(5)}`}</p>
+            <p><b>Location:</b> {locDesc || `${pos?.[0].toFixed(5)}, ${pos?.[1].toFixed(5)}`}</p>
             <p><b>Description:</b> {description}</p>
             <p className="flex items-center gap-2"><b>Status:</b> <StatusBadge status={done.status} /></p>
             <p className="text-muted-foreground">Next: {STATUS.submitted.next} You'll get a notification at each step.</p>
@@ -170,12 +173,13 @@ function NewReport() {
       {step === 3 && (
         <Panel className="space-y-4">
           <h2 className="text-lg font-bold">Where is it?</h2>
+          <div className="space-y-1.5"><Label>Collection location</Label><LocationSelect value={location} onChange={setLocation} /></div>
           <Button variant="secondary" onClick={locate} disabled={geoBusy}>{geoBusy ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Crosshair className="mr-2 h-4 w-4" />}Use my location</Button>
           {geoMsg && <p className="text-sm text-muted-foreground">{geoMsg}</p>}
           <PickerMap value={pos} onChange={(a, b) => setPos([a, b])} />
           <p className="text-xs text-muted-foreground">{pos ? `Pin: ${pos[0].toFixed(5)}, ${pos[1].toFixed(5)}` : "Tap the map to drop a pin."}</p>
           <div className="space-y-1.5"><Label>Landmark or area (optional)</Label><Input value={locDesc} onChange={(e) => setLocDesc(e.target.value)} maxLength={300} placeholder="e.g. Behind Bole Medhanialem church" /></div>
-          <div className="flex gap-2"><Button variant="outline" onClick={() => setStep(2)}>Back</Button><Button className="flex-1" disabled={!pos} onClick={review}>Review</Button></div>
+          <div className="flex gap-2"><Button variant="outline" onClick={() => setStep(2)}>Back</Button><Button className="flex-1" disabled={!pos || !location} onClick={review}>Review</Button></div>
         </Panel>
       )}
 

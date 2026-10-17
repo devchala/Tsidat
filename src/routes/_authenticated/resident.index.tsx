@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Empty, PageHeader, SignedImage, StatusBadge } from "@/components/tsidat/bits";
 
 export const Route = createFileRoute("/_authenticated/resident/")({
-  head: () => ({ meta: [{ title: "My reports — Tsidat" }, { name: "description", content: "Track your waste reports." }] }),
+  head: () => ({ meta: [{ title: "My reports — Tsidat" }, { name: "description", content: "Track your waste reports." }, { property: "og:title", content: "My reports — Tsidat" }, { property: "og:description", content: "Track your waste reports." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: ResidentHome,
 });
 

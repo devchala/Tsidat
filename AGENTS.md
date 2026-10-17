@@ -17,4 +17,4 @@
 - Reports (one per resident) are separate from incidents (the real waste pile); assignments attach to incidents and status flows down to every linked report with history rows.
 - Photos live in private storage buckets under `{userId}/...` and are shown with short-lived signed links.
 - Maps use Leaflet loaded only in the browser through `src/components/tsidat/Maps.tsx`, never imported directly into pages.
-- Navigation reuses short-lived Query caches and preloads route code on intent; dashboard redirects share the identity query, while the managed authentication gate and database authorization remain authoritative.
+- Navigation reuses short-lived Query caches without speculative protected-route preloads; dashboard redirects share the identity query, while the managed authentication gate and database authorization remain authoritative.

@@ -6,4 +6,4 @@
 
 # Navigation performance
 - [x] Measure signed-in navigation and remove redundant identity and page-data requests.
-- [ ] Verify cached page switching and run regression tests.
+- [x] Verify cached page switching and run regression tests.

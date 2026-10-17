@@ -10,33 +10,186 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
+import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedResidentIndexRouteImport } from './routes/_authenticated/resident.index'
+import { Route as AuthenticatedResidentNewRouteImport } from './routes/_authenticated/resident.new'
+import { Route as AuthenticatedWorkerIndexRouteImport } from './routes/_authenticated/worker.index'
+import { Route as AuthenticatedAdminReportsIndexRouteImport } from './routes/_authenticated/admin.reports.index'
+import { Route as AuthenticatedAdminReportsIdRouteImport } from './routes/_authenticated/admin.reports.$id'
+import { Route as AuthenticatedResidentReportsIdRouteImport } from './routes/_authenticated/resident.reports.$id'
+import { Route as AuthenticatedWorkerTasksIdRouteImport } from './routes/_authenticated/worker.tasks.$id'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedDashboardRoute = AuthenticatedDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedResidentIndexRoute =
+  AuthenticatedResidentIndexRouteImport.update({
+    id: '/resident/',
+    path: '/resident/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedResidentNewRoute =
+  AuthenticatedResidentNewRouteImport.update({
+    id: '/resident/new',
+    path: '/resident/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedWorkerIndexRoute =
+  AuthenticatedWorkerIndexRouteImport.update({
+    id: '/worker/',
+    path: '/worker/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminReportsIndexRoute =
+  AuthenticatedAdminReportsIndexRouteImport.update({
+    id: '/admin/reports/',
+    path: '/admin/reports/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminReportsIdRoute =
+  AuthenticatedAdminReportsIdRouteImport.update({
+    id: '/admin/reports/$id',
+    path: '/admin/reports/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedResidentReportsIdRoute =
+  AuthenticatedResidentReportsIdRouteImport.update({
+    id: '/resident/reports/$id',
+    path: '/resident/reports/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedWorkerTasksIdRoute =
+  AuthenticatedWorkerTasksIdRouteImport.update({
+    id: '/worker/tasks/$id',
+    path: '/worker/tasks/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/resident/new': typeof AuthenticatedResidentNewRoute
+  '/admin/': typeof AuthenticatedAdminIndexRoute
+  '/resident/': typeof AuthenticatedResidentIndexRoute
+  '/worker/': typeof AuthenticatedWorkerIndexRoute
+  '/admin/reports/$id': typeof AuthenticatedAdminReportsIdRoute
+  '/resident/reports/$id': typeof AuthenticatedResidentReportsIdRoute
+  '/worker/tasks/$id': typeof AuthenticatedWorkerTasksIdRoute
+  '/admin/reports/': typeof AuthenticatedAdminReportsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/dashboard': typeof AuthenticatedDashboardRoute
+  '/resident/new': typeof AuthenticatedResidentNewRoute
+  '/admin': typeof AuthenticatedAdminIndexRoute
+  '/resident': typeof AuthenticatedResidentIndexRoute
+  '/worker': typeof AuthenticatedWorkerIndexRoute
+  '/admin/reports/$id': typeof AuthenticatedAdminReportsIdRoute
+  '/resident/reports/$id': typeof AuthenticatedResidentReportsIdRoute
+  '/worker/tasks/$id': typeof AuthenticatedWorkerTasksIdRoute
+  '/admin/reports': typeof AuthenticatedAdminReportsIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/auth': typeof AuthRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/resident/new': typeof AuthenticatedResidentNewRoute
+  '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
+  '/_authenticated/resident/': typeof AuthenticatedResidentIndexRoute
+  '/_authenticated/worker/': typeof AuthenticatedWorkerIndexRoute
+  '/_authenticated/admin/reports/$id': typeof AuthenticatedAdminReportsIdRoute
+  '/_authenticated/resident/reports/$id': typeof AuthenticatedResidentReportsIdRoute
+  '/_authenticated/worker/tasks/$id': typeof AuthenticatedWorkerTasksIdRoute
+  '/_authenticated/admin/reports/': typeof AuthenticatedAdminReportsIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/dashboard'
+    | '/resident/new'
+    | '/admin/'
+    | '/resident/'
+    | '/worker/'
+    | '/admin/reports/$id'
+    | '/resident/reports/$id'
+    | '/worker/tasks/$id'
+    | '/admin/reports/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to:
+    | '/'
+    | '/auth'
+    | '/reset-password'
+    | '/dashboard'
+    | '/resident/new'
+    | '/admin'
+    | '/resident'
+    | '/worker'
+    | '/admin/reports/$id'
+    | '/resident/reports/$id'
+    | '/worker/tasks/$id'
+    | '/admin/reports'
+  id:
+    | '__root__'
+    | '/'
+    | '/_authenticated'
+    | '/auth'
+    | '/reset-password'
+    | '/_authenticated/dashboard'
+    | '/_authenticated/resident/new'
+    | '/_authenticated/admin/'
+    | '/_authenticated/resident/'
+    | '/_authenticated/worker/'
+    | '/_authenticated/admin/reports/$id'
+    | '/_authenticated/resident/reports/$id'
+    | '/_authenticated/worker/tasks/$id'
+    | '/_authenticated/admin/reports/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AuthRoute: typeof AuthRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,11 +201,125 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated/dashboard': {
+      id: '/_authenticated/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof AuthenticatedDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/': {
+      id: '/_authenticated/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/resident/': {
+      id: '/_authenticated/resident/'
+      path: '/resident'
+      fullPath: '/resident/'
+      preLoaderRoute: typeof AuthenticatedResidentIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/resident/new': {
+      id: '/_authenticated/resident/new'
+      path: '/resident/new'
+      fullPath: '/resident/new'
+      preLoaderRoute: typeof AuthenticatedResidentNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/worker/': {
+      id: '/_authenticated/worker/'
+      path: '/worker'
+      fullPath: '/worker/'
+      preLoaderRoute: typeof AuthenticatedWorkerIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/reports/': {
+      id: '/_authenticated/admin/reports/'
+      path: '/admin/reports'
+      fullPath: '/admin/reports/'
+      preLoaderRoute: typeof AuthenticatedAdminReportsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/reports/$id': {
+      id: '/_authenticated/admin/reports/$id'
+      path: '/admin/reports/$id'
+      fullPath: '/admin/reports/$id'
+      preLoaderRoute: typeof AuthenticatedAdminReportsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/resident/reports/$id': {
+      id: '/_authenticated/resident/reports/$id'
+      path: '/resident/reports/$id'
+      fullPath: '/resident/reports/$id'
+      preLoaderRoute: typeof AuthenticatedResidentReportsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/worker/tasks/$id': {
+      id: '/_authenticated/worker/tasks/$id'
+      path: '/worker/tasks/$id'
+      fullPath: '/worker/tasks/$id'
+      preLoaderRoute: typeof AuthenticatedWorkerTasksIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedResidentNewRoute: typeof AuthenticatedResidentNewRoute
+  AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
+  AuthenticatedResidentIndexRoute: typeof AuthenticatedResidentIndexRoute
+  AuthenticatedWorkerIndexRoute: typeof AuthenticatedWorkerIndexRoute
+  AuthenticatedAdminReportsIdRoute: typeof AuthenticatedAdminReportsIdRoute
+  AuthenticatedResidentReportsIdRoute: typeof AuthenticatedResidentReportsIdRoute
+  AuthenticatedWorkerTasksIdRoute: typeof AuthenticatedWorkerTasksIdRoute
+  AuthenticatedAdminReportsIndexRoute: typeof AuthenticatedAdminReportsIndexRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedResidentNewRoute: AuthenticatedResidentNewRoute,
+  AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
+  AuthenticatedResidentIndexRoute: AuthenticatedResidentIndexRoute,
+  AuthenticatedWorkerIndexRoute: AuthenticatedWorkerIndexRoute,
+  AuthenticatedAdminReportsIdRoute: AuthenticatedAdminReportsIdRoute,
+  AuthenticatedResidentReportsIdRoute: AuthenticatedResidentReportsIdRoute,
+  AuthenticatedWorkerTasksIdRoute: AuthenticatedWorkerTasksIdRoute,
+  AuthenticatedAdminReportsIndexRoute: AuthenticatedAdminReportsIndexRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AuthRoute: AuthRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

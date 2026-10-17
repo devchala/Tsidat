@@ -43,6 +43,13 @@
       "when": 1792264460875,
       "tag": "0005_complete_location_scope_and_legacy_routing",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1792265533609,
+      "tag": "0006_fix_completion_verification_record_scope",
+      "breakpoints": true
     }
   ]
 }

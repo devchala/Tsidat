@@ -672,6 +672,16 @@ export type Database = {
         Args: { score: number }
         Returns: Database["public"]["Enums"]["priority_level"]
       }
+      location_nearby_reports: {
+        Args: { _lat: number; _lng: number; _location: string }
+        Returns: {
+          category: Database["public"]["Enums"]["waste_category"]
+          created_at: string
+          distance_m: number
+          reference: string
+          status: Database["public"]["Enums"]["report_status"]
+        }[]
+      }
       nearby_reports: {
         Args: {
           _category?: Database["public"]["Enums"]["waste_category"]
@@ -709,12 +719,20 @@ export type Database = {
         Returns: boolean
       }
       superadmin_create_location: { Args: { _name: string }; Returns: string }
+      superadmin_route_incident: {
+        Args: { _incident: string; _location: string }
+        Returns: undefined
+      }
       superadmin_route_report: {
         Args: { _location: string; _report: string }
         Returns: undefined
       }
       superadmin_set_local_admin: {
         Args: { _grant: boolean; _location: string; _user: string }
+        Returns: undefined
+      }
+      superadmin_set_worker_location: {
+        Args: { _location: string; _user: string }
         Returns: undefined
       }
       worker_on_incident: {

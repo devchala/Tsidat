@@ -612,6 +612,14 @@ export type Database = {
         Returns: undefined
       }
       require_admin: { Args: never; Returns: undefined }
+      resident_on_incident: {
+        Args: { _incident: string; _user: string }
+        Returns: boolean
+      }
+      worker_on_incident: {
+        Args: { _incident: string; _user: string }
+        Returns: boolean
+      }
       worker_update_task: {
         Args: {
           _assignment: string

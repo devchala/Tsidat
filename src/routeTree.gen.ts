@@ -15,9 +15,13 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedAdminIndexRouteImport } from './routes/_authenticated/admin.index'
+import { Route as AuthenticatedAdminAuditRouteImport } from './routes/_authenticated/admin.audit'
+import { Route as AuthenticatedAdminUsersRouteImport } from './routes/_authenticated/admin.users'
+import { Route as AuthenticatedAdminWorkersRouteImport } from './routes/_authenticated/admin.workers'
 import { Route as AuthenticatedResidentIndexRouteImport } from './routes/_authenticated/resident.index'
 import { Route as AuthenticatedResidentNewRouteImport } from './routes/_authenticated/resident.new'
 import { Route as AuthenticatedWorkerIndexRouteImport } from './routes/_authenticated/worker.index'
+import { Route as AuthenticatedAdminIncidentsIdRouteImport } from './routes/_authenticated/admin.incidents.$id'
 import { Route as AuthenticatedAdminReportsIndexRouteImport } from './routes/_authenticated/admin.reports.index'
 import { Route as AuthenticatedAdminReportsIdRouteImport } from './routes/_authenticated/admin.reports.$id'
 import { Route as AuthenticatedResidentReportsIdRouteImport } from './routes/_authenticated/resident.reports.$id'
@@ -52,6 +56,22 @@ const AuthenticatedAdminIndexRoute = AuthenticatedAdminIndexRouteImport.update({
   path: '/admin/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedAdminAuditRoute = AuthenticatedAdminAuditRouteImport.update({
+  id: '/admin/audit',
+  path: '/admin/audit',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminUsersRoute = AuthenticatedAdminUsersRouteImport.update({
+  id: '/admin/users',
+  path: '/admin/users',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedAdminWorkersRoute =
+  AuthenticatedAdminWorkersRouteImport.update({
+    id: '/admin/workers',
+    path: '/admin/workers',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedResidentIndexRoute =
   AuthenticatedResidentIndexRouteImport.update({
     id: '/resident/',
@@ -68,6 +88,12 @@ const AuthenticatedWorkerIndexRoute =
   AuthenticatedWorkerIndexRouteImport.update({
     id: '/worker/',
     path: '/worker/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAdminIncidentsIdRoute =
+  AuthenticatedAdminIncidentsIdRouteImport.update({
+    id: '/admin/incidents/$id',
+    path: '/admin/incidents/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedAdminReportsIndexRoute =
@@ -100,10 +126,14 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/admin/audit': typeof AuthenticatedAdminAuditRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/admin/workers': typeof AuthenticatedAdminWorkersRoute
   '/resident/new': typeof AuthenticatedResidentNewRoute
   '/admin/': typeof AuthenticatedAdminIndexRoute
   '/resident/': typeof AuthenticatedResidentIndexRoute
   '/worker/': typeof AuthenticatedWorkerIndexRoute
+  '/admin/incidents/$id': typeof AuthenticatedAdminIncidentsIdRoute
   '/admin/reports/$id': typeof AuthenticatedAdminReportsIdRoute
   '/resident/reports/$id': typeof AuthenticatedResidentReportsIdRoute
   '/worker/tasks/$id': typeof AuthenticatedWorkerTasksIdRoute
@@ -114,10 +144,14 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
+  '/admin/audit': typeof AuthenticatedAdminAuditRoute
+  '/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/admin/workers': typeof AuthenticatedAdminWorkersRoute
   '/resident/new': typeof AuthenticatedResidentNewRoute
   '/admin': typeof AuthenticatedAdminIndexRoute
   '/resident': typeof AuthenticatedResidentIndexRoute
   '/worker': typeof AuthenticatedWorkerIndexRoute
+  '/admin/incidents/$id': typeof AuthenticatedAdminIncidentsIdRoute
   '/admin/reports/$id': typeof AuthenticatedAdminReportsIdRoute
   '/resident/reports/$id': typeof AuthenticatedResidentReportsIdRoute
   '/worker/tasks/$id': typeof AuthenticatedWorkerTasksIdRoute
@@ -130,10 +164,14 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
+  '/_authenticated/admin/audit': typeof AuthenticatedAdminAuditRoute
+  '/_authenticated/admin/users': typeof AuthenticatedAdminUsersRoute
+  '/_authenticated/admin/workers': typeof AuthenticatedAdminWorkersRoute
   '/_authenticated/resident/new': typeof AuthenticatedResidentNewRoute
   '/_authenticated/admin/': typeof AuthenticatedAdminIndexRoute
   '/_authenticated/resident/': typeof AuthenticatedResidentIndexRoute
   '/_authenticated/worker/': typeof AuthenticatedWorkerIndexRoute
+  '/_authenticated/admin/incidents/$id': typeof AuthenticatedAdminIncidentsIdRoute
   '/_authenticated/admin/reports/$id': typeof AuthenticatedAdminReportsIdRoute
   '/_authenticated/resident/reports/$id': typeof AuthenticatedResidentReportsIdRoute
   '/_authenticated/worker/tasks/$id': typeof AuthenticatedWorkerTasksIdRoute
@@ -146,10 +184,14 @@ export interface FileRouteTypes {
     | '/auth'
     | '/reset-password'
     | '/dashboard'
+    | '/admin/audit'
+    | '/admin/users'
+    | '/admin/workers'
     | '/resident/new'
     | '/admin/'
     | '/resident/'
     | '/worker/'
+    | '/admin/incidents/$id'
     | '/admin/reports/$id'
     | '/resident/reports/$id'
     | '/worker/tasks/$id'
@@ -160,10 +202,14 @@ export interface FileRouteTypes {
     | '/auth'
     | '/reset-password'
     | '/dashboard'
+    | '/admin/audit'
+    | '/admin/users'
+    | '/admin/workers'
     | '/resident/new'
     | '/admin'
     | '/resident'
     | '/worker'
+    | '/admin/incidents/$id'
     | '/admin/reports/$id'
     | '/resident/reports/$id'
     | '/worker/tasks/$id'
@@ -175,10 +221,14 @@ export interface FileRouteTypes {
     | '/auth'
     | '/reset-password'
     | '/_authenticated/dashboard'
+    | '/_authenticated/admin/audit'
+    | '/_authenticated/admin/users'
+    | '/_authenticated/admin/workers'
     | '/_authenticated/resident/new'
     | '/_authenticated/admin/'
     | '/_authenticated/resident/'
     | '/_authenticated/worker/'
+    | '/_authenticated/admin/incidents/$id'
     | '/_authenticated/admin/reports/$id'
     | '/_authenticated/resident/reports/$id'
     | '/_authenticated/worker/tasks/$id'
@@ -236,6 +286,27 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/admin/audit': {
+      id: '/_authenticated/admin/audit'
+      path: '/admin/audit'
+      fullPath: '/admin/audit'
+      preLoaderRoute: typeof AuthenticatedAdminAuditRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/users': {
+      id: '/_authenticated/admin/users'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof AuthenticatedAdminUsersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/workers': {
+      id: '/_authenticated/admin/workers'
+      path: '/admin/workers'
+      fullPath: '/admin/workers'
+      preLoaderRoute: typeof AuthenticatedAdminWorkersRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/resident/': {
       id: '/_authenticated/resident/'
       path: '/resident'
@@ -255,6 +326,13 @@ declare module '@tanstack/react-router' {
       path: '/worker'
       fullPath: '/worker/'
       preLoaderRoute: typeof AuthenticatedWorkerIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/admin/incidents/$id': {
+      id: '/_authenticated/admin/incidents/$id'
+      path: '/admin/incidents/$id'
+      fullPath: '/admin/incidents/$id'
+      preLoaderRoute: typeof AuthenticatedAdminIncidentsIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/admin/reports/': {
@@ -290,10 +368,14 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
+  AuthenticatedAdminAuditRoute: typeof AuthenticatedAdminAuditRoute
+  AuthenticatedAdminUsersRoute: typeof AuthenticatedAdminUsersRoute
+  AuthenticatedAdminWorkersRoute: typeof AuthenticatedAdminWorkersRoute
   AuthenticatedResidentNewRoute: typeof AuthenticatedResidentNewRoute
   AuthenticatedAdminIndexRoute: typeof AuthenticatedAdminIndexRoute
   AuthenticatedResidentIndexRoute: typeof AuthenticatedResidentIndexRoute
   AuthenticatedWorkerIndexRoute: typeof AuthenticatedWorkerIndexRoute
+  AuthenticatedAdminIncidentsIdRoute: typeof AuthenticatedAdminIncidentsIdRoute
   AuthenticatedAdminReportsIdRoute: typeof AuthenticatedAdminReportsIdRoute
   AuthenticatedResidentReportsIdRoute: typeof AuthenticatedResidentReportsIdRoute
   AuthenticatedWorkerTasksIdRoute: typeof AuthenticatedWorkerTasksIdRoute
@@ -302,10 +384,14 @@ interface AuthenticatedRouteRouteChildren {
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
+  AuthenticatedAdminAuditRoute: AuthenticatedAdminAuditRoute,
+  AuthenticatedAdminUsersRoute: AuthenticatedAdminUsersRoute,
+  AuthenticatedAdminWorkersRoute: AuthenticatedAdminWorkersRoute,
   AuthenticatedResidentNewRoute: AuthenticatedResidentNewRoute,
   AuthenticatedAdminIndexRoute: AuthenticatedAdminIndexRoute,
   AuthenticatedResidentIndexRoute: AuthenticatedResidentIndexRoute,
   AuthenticatedWorkerIndexRoute: AuthenticatedWorkerIndexRoute,
+  AuthenticatedAdminIncidentsIdRoute: AuthenticatedAdminIncidentsIdRoute,
   AuthenticatedAdminReportsIdRoute: AuthenticatedAdminReportsIdRoute,
   AuthenticatedResidentReportsIdRoute: AuthenticatedResidentReportsIdRoute,
   AuthenticatedWorkerTasksIdRoute: AuthenticatedWorkerTasksIdRoute,

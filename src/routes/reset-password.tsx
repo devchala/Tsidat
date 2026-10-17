@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { errMsg } from "@/lib/tsidat";
 
 export const Route = createFileRoute("/reset-password")({
-  head: () => ({ meta: [{ title: "Set a new password — Tsidat" }, { name: "description", content: "Choose a new password for your Tsidat account." }, { property: "og:title", content: "Reset password — Tsidat" }, { property: "og:description", content: "Choose a new password." }] }),
+  head: () => ({ meta: [{ title: "Set a new password — Tsidat" }, { name: "description", content: "Choose a new password for your Tsidat account." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }, { property: "og:title", content: "Reset password — Tsidat" }, { property: "og:description", content: "Choose a new password." }] }),
   component: Reset,
 });
 

@@ -13,7 +13,7 @@ import { PointsMap } from "@/components/tsidat/Maps";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/resident/reports/$id")({
-  head: () => ({ meta: [{ title: "Report details — Tsidat" }, { name: "description", content: "Status timeline for your report." }] }),
+  head: () => ({ meta: [{ title: "Report details — Tsidat" }, { name: "description", content: "Status timeline for your report." }, { property: "og:title", content: "Report details — Tsidat" }, { property: "og:description", content: "Status timeline for your report." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: ReportDetail,
 });
 

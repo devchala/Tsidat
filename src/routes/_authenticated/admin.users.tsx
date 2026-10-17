@@ -11,7 +11,7 @@ import { PageHeader } from "@/components/tsidat/bits";
 import { AdminOnly } from "@/components/tsidat/AdminOnly";
 
 export const Route = createFileRoute("/_authenticated/admin/users")({
-  head: () => ({ meta: [{ title: "Users — Tsidat admin" }, { name: "description", content: "Manage users and roles." }] }),
+  head: () => ({ meta: [{ title: "Users — Tsidat admin" }, { name: "description", content: "Manage users and roles." }, { property: "og:title", content: "Users — Tsidat admin" }, { property: "og:description", content: "Manage users and roles." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: () => <AdminOnly roles={["superadmin"]}><Users /></AdminOnly>,
 });
 

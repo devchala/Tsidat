@@ -14,7 +14,7 @@ import { useLocations, isSuperadmin } from "@/lib/locations";
 import { LocationSelect } from "@/components/tsidat/LocationSelect";
 
 export const Route = createFileRoute("/_authenticated/admin/reports/$id")({
-  head: () => ({ meta: [{ title: "Review report — Tsidat admin" }, { name: "description", content: "Review report evidence." }] }),
+  head: () => ({ meta: [{ title: "Review report — Tsidat admin" }, { name: "description", content: "Review report evidence." }, { property: "og:title", content: "Review report — Tsidat admin" }, { property: "og:description", content: "Review report evidence." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: () => <AdminOnly><Review /></AdminOnly>,
 });
 

@@ -10,7 +10,7 @@ import { AdminOnly } from "@/components/tsidat/AdminOnly";
 import { useMe } from "@/lib/auth";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
-  head: () => ({ meta: [{ title: "Command center — Tsidat" }, { name: "description", content: "Waste management command center." }] }),
+  head: () => ({ meta: [{ title: "Command center — Tsidat" }, { name: "description", content: "Waste management command center." }, { property: "og:title", content: "Command center — Tsidat" }, { property: "og:description", content: "Waste management command center." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: () => <AdminOnly><Command /></AdminOnly>,
 });
 

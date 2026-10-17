@@ -7,7 +7,7 @@ import { Empty, PageHeader } from "@/components/tsidat/bits";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/_authenticated/notifications")({
-  head: () => ({ meta: [{ title: "Notifications — Tsidat" }, { name: "description", content: "Your updates." }] }),
+  head: () => ({ meta: [{ title: "Notifications — Tsidat" }, { name: "description", content: "Your updates." }, { property: "og:title", content: "Notifications — Tsidat" }, { property: "og:description", content: "Your updates." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: Notifications,
 });
 

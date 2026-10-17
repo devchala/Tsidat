@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 import { LocationSelect } from "@/components/tsidat/LocationSelect";
 
 export const Route = createFileRoute("/_authenticated/resident/new")({
-  head: () => ({ meta: [{ title: "Report waste — Tsidat" }, { name: "description", content: "Submit a new waste report." }] }),
+  head: () => ({ meta: [{ title: "Report waste — Tsidat" }, { name: "description", content: "Submit a new waste report." }, { property: "og:title", content: "Report waste — Tsidat" }, { property: "og:description", content: "Submit a new waste report." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: NewReport,
 });
 

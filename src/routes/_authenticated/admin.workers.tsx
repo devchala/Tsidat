@@ -16,7 +16,7 @@ import { Label } from "@/components/ui/label";
 import { Plus } from "lucide-react";
 
 export const Route = createFileRoute("/_authenticated/admin/workers")({
-  head: () => ({ meta: [{ title: "Workers — Tsidat admin" }, { name: "description", content: "Verify and manage collection workers." }] }),
+  head: () => ({ meta: [{ title: "Workers — Tsidat admin" }, { name: "description", content: "Verify and manage collection workers." }, { property: "og:title", content: "Workers — Tsidat admin" }, { property: "og:description", content: "Verify and manage collection workers." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: () => <AdminOnly><Workers /></AdminOnly>,
 });
 

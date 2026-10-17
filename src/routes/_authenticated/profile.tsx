@@ -12,7 +12,7 @@ import { Label } from "@/components/ui/label";
 import { PageHeader, Panel } from "@/components/tsidat/bits";
 
 export const Route = createFileRoute("/_authenticated/profile")({
-  head: () => ({ meta: [{ title: "Profile — Tsidat" }, { name: "description", content: "Manage your profile." }] }),
+  head: () => ({ meta: [{ title: "Profile — Tsidat" }, { name: "description", content: "Manage your profile." }, { property: "og:title", content: "Profile — Tsidat" }, { property: "og:description", content: "Manage your profile." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: Profile,
 });
 

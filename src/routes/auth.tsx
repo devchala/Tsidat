@@ -20,7 +20,7 @@ export const Route = createFileRoute("/auth")({
   head: () => ({
     meta: [
       { title: "Sign in — Tsidat ጽዳት" },
-      { name: "description", content: "Sign in or create a Tsidat account to report and track waste collection." },
+      { name: "description", content: "Sign in or create a Tsidat account to report and track waste collection." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
       { property: "og:title", content: "Sign in — Tsidat" },
       { property: "og:description", content: "Access your Tsidat resident, worker or admin dashboard." },
     ],

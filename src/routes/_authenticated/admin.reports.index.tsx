@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export const Route = createFileRoute("/_authenticated/admin/reports/")({
-  head: () => ({ meta: [{ title: "Reports — Tsidat admin" }, { name: "description", content: "Review and manage citizen reports." }] }),
+  head: () => ({ meta: [{ title: "Reports — Tsidat admin" }, { name: "description", content: "Review and manage citizen reports." }, { property: "og:title", content: "Reports — Tsidat admin" }, { property: "og:description", content: "Review and manage citizen reports." }, { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" }] }),
   component: () => <AdminOnly><Reports /></AdminOnly>,
 });
 

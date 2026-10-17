@@ -2,7 +2,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { z } from "zod";
 import { toast } from "sonner";
-import { Leaf, Loader2 } from "lucide-react";
+import { ArrowLeft, Leaf, Loader2 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { lovable } from "@/integrations/lovable";
 import { Button } from "@/components/ui/button";
@@ -49,6 +49,11 @@ function AuthPage() {
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => { if (data.user) navigate({ to: "/dashboard", replace: true }); });
   }, [navigate]);
+
+  function goBack() {
+    if (window.history.length > 1) window.history.back();
+    else navigate({ to: "/" });
+  }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
@@ -102,6 +107,9 @@ function AuthPage() {
       </div>
       <div className="flex items-center justify-center p-6">
         <div className="w-full max-w-md">
+          <Button type="button" variant="ghost" size="sm" onClick={goBack} className="-ml-2 mb-3 text-muted-foreground">
+            <ArrowLeft className="mr-1.5 h-4 w-4" /> Back
+          </Button>
           <h1 className="text-3xl font-bold">{titles[mode]}</h1>
           {mode === "worker" && <p className="mt-2 text-sm text-muted-foreground">Your application will be reviewed by an administrator before you can receive tasks.</p>}
           {sent ? (

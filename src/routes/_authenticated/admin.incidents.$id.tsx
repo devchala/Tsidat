@@ -12,6 +12,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { PageHeader, Panel, PriorityBadge, SignedImage, StatusBadge, Timeline } from "@/components/tsidat/bits";
 import { PointsMap } from "@/components/tsidat/Maps";
 import { AdminOnly } from "@/components/tsidat/AdminOnly";
+import { useMe } from "@/lib/auth";
+import { isSuperadmin, useLocations } from "@/lib/locations";
+import { LocationSelect } from "@/components/tsidat/LocationSelect";
 
 export const Route = createFileRoute("/_authenticated/admin/incidents/$id")({
   head: () => ({ meta: [{ title: "Incident — Tsidat admin" }, { name: "description", content: "Manage an operational incident." }] }),
@@ -23,6 +26,9 @@ const LIVE = ["assigned", "en_route", "in_progress", "awaiting_verification"];
 function Incident() {
   const { id } = Route.useParams();
   const qc = useQueryClient();
+  const { data: me } = useMe();
+  const locations = useLocations();
+  const [location, setLocation] = useState("");
   const [note, setNote] = useState("");
   const [reason, setReason] = useState("");
   const [prio, setPrio] = useState<PriorityLevel | "">("");
@@ -77,6 +83,7 @@ function Incident() {
   return (
     <div>
       <PageHeader title={`${inc.reference} · ${categoryLabel(inc.category)}`} subtitle={inc.priority_reason ?? undefined} actions={<div className="flex gap-2"><StatusBadge status={inc.status} /><PriorityBadge level={inc.priority_level} /></div>} />
+      <div className="mb-6 flex flex-wrap items-center gap-3 border-b pb-4"><p className="text-sm font-semibold">Collection location: {locations.data?.find((l) => l.id === inc.location_id)?.name ?? "Unassigned"}</p>{isSuperadmin(me?.roles ?? []) && <div className="flex w-full gap-2 sm:w-80"><LocationSelect value={location} onChange={setLocation} /><Button variant="outline" disabled={!location || busy} onClick={() => run(() => supabase.rpc("superadmin_route_incident", { _incident: id, _location: location }), "Incident location updated")}>Save location</Button></div>}</div>
       <div className="grid gap-6 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
           <PointsMap height="h-64" points={[{ id: inc.id, lat: inc.latitude, lng: inc.longitude, priority: inc.priority_level, title: inc.reference }]} />

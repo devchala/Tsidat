@@ -75,7 +75,7 @@ function NewReport() {
     if (!file) return toast.error("Add a photo first");
     if (!v.success) return toast.error(v.error.issues[0].message);
     if (!pos || !location) return toast.error("Choose the report location");
-    const { data } = await supabase.rpc("nearby_reports", { _lat: pos[0], _lng: pos[1] });
+    const { data } = await supabase.rpc("location_nearby_reports", { _lat: pos[0], _lng: pos[1], _location: location });
     setNearby((data as Nearby[]) ?? []);
     setStep(4);
   }

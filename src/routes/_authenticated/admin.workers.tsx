@@ -30,6 +30,7 @@ function Workers() {
   const [location, setLocation] = useState("all");
   const [addLocation, setAddLocation] = useState("");
   const [email, setEmail] = useState("");
+  const [workerLocations, setWorkerLocations] = useState<Record<string, string>>({});
   const [busy, setBusy] = useState(false);
   const [tab, setTab] = useState<WS>("pending");
   const [reasons, setReasons] = useState<Record<string, string>>({});
@@ -88,6 +89,7 @@ function Workers() {
               <div className="flex w-full flex-col gap-2 sm:w-64">
                 {tab !== "approved" && <Button disabled={busy || !w.profile?.location_id} onClick={() => set(w.user_id, "approved")}>Approve</Button>}
                 {!w.profile?.location_id && <p className="text-xs text-warning">No assigned location</p>}
+                {global && <><LocationSelect value={workerLocations[w.user_id] ?? w.profile?.location_id ?? ""} onChange={(v) => setWorkerLocations({ ...workerLocations, [w.user_id]: v })} label="Assigned worker location" /><Button variant="outline" disabled={busy || !workerLocations[w.user_id]} onClick={async () => { const chosen = workerLocations[w.user_id]; if (!chosen) return; setBusy(true); const { error } = await supabase.rpc("superadmin_set_worker_location", { _user: w.user_id, _location: chosen }); setBusy(false); if (error) return toast.error(errMsg(error)); toast.success("Worker location updated"); qc.invalidateQueries(); }}>Save worker location</Button></>}
                 <Input placeholder="Reason (for reject/suspend)" value={reasons[w.user_id] ?? ""} onChange={(e) => setReasons({ ...reasons, [w.user_id]: e.target.value })} maxLength={300} />
                 <div className="flex gap-2">
                   {tab === "pending" && <Button variant="destructive" className="flex-1" disabled={busy || !reasons[w.user_id]?.trim()} onClick={() => set(w.user_id, "rejected")}>Reject</Button>}

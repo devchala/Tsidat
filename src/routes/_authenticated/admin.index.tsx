@@ -7,6 +7,7 @@ import { Empty, Kpi, PageHeader, Panel, PriorityBadge, StatusBadge } from "@/com
 import { PointsMap } from "@/components/tsidat/Maps";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { AdminOnly } from "@/components/tsidat/AdminOnly";
+import { useMe } from "@/lib/auth";
 
 export const Route = createFileRoute("/_authenticated/admin/")({
   head: () => ({ meta: [{ title: "Command center — Tsidat" }, { name: "description", content: "Waste management command center." }] }),
@@ -18,6 +19,7 @@ const ACTIVE = ["accepted", "assigned", "en_route", "in_progress", "awaiting_ver
 
 function Command() {
   const navigate = useNavigate();
+  const { data: me } = useMe();
   const [range, setRange] = useState<keyof typeof RANGES>("30");
   const [fStatus, setFStatus] = useState("active");
   const [fPrio, setFPrio] = useState("all");
@@ -57,7 +59,7 @@ function Command() {
 
   return (
     <div>
-      <PageHeader title="Command center" subtitle="Live operational overview"
+      <PageHeader title="Command center" subtitle={me?.roles.includes("superadmin") ? "All locations" : me?.locations.map((l) => l.name).join(" · ")}
         actions={<Select value={range} onValueChange={(v) => setRange(v as keyof typeof RANGES)}><SelectTrigger className="w-40"><SelectValue /></SelectTrigger><SelectContent>{Object.entries(RANGES).map(([k, v]) => <SelectItem key={k} value={k}>{v}</SelectItem>)}</SelectContent></Select>} />
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4 xl:grid-cols-6">
         <Kpi label="Total reports" value={reports.length} />

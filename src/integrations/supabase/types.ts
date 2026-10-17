@@ -14,6 +14,36 @@ export type Database = {
   }
   public: {
     Tables: {
+      admin_locations: {
+        Row: {
+          location_id: string
+          user_id: string
+        }
+        Insert: {
+          location_id: string
+          user_id: string
+        }
+        Update: {
+          location_id?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "admin_locations_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "admin_locations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       assignments: {
         Row: {
           assigned_at: string
@@ -178,6 +208,7 @@ export type Database = {
           id: string
           latitude: number
           location_description: string | null
+          location_id: string | null
           longitude: number
           priority_level: Database["public"]["Enums"]["priority_level"]
           priority_reason: string | null
@@ -197,6 +228,7 @@ export type Database = {
           id?: string
           latitude: number
           location_description?: string | null
+          location_id?: string | null
           longitude: number
           priority_level?: Database["public"]["Enums"]["priority_level"]
           priority_reason?: string | null
@@ -216,6 +248,7 @@ export type Database = {
           id?: string
           latitude?: number
           location_description?: string | null
+          location_id?: string | null
           longitude?: number
           priority_level?: Database["public"]["Enums"]["priority_level"]
           priority_reason?: string | null
@@ -224,6 +257,32 @@ export type Database = {
           status?: Database["public"]["Enums"]["report_status"]
           title?: string
           updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "incidents_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      locations: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
         }
         Relationships: []
       }
@@ -273,6 +332,7 @@ export type Database = {
           created_at: string
           display_name: string
           id: string
+          location_id: string | null
           phone: string | null
           updated_at: string
           worker_status: Database["public"]["Enums"]["worker_status"]
@@ -284,6 +344,7 @@ export type Database = {
           created_at?: string
           display_name?: string
           id: string
+          location_id?: string | null
           phone?: string | null
           updated_at?: string
           worker_status?: Database["public"]["Enums"]["worker_status"]
@@ -295,11 +356,20 @@ export type Database = {
           created_at?: string
           display_name?: string
           id?: string
+          location_id?: string | null
           phone?: string | null
           updated_at?: string
           worker_status?: Database["public"]["Enums"]["worker_status"]
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "profiles_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       reports: {
         Row: {
@@ -311,6 +381,7 @@ export type Database = {
           incident_id: string | null
           latitude: number
           location_description: string | null
+          location_id: string | null
           longitude: number
           priority_level: Database["public"]["Enums"]["priority_level"]
           priority_score: number
@@ -329,6 +400,7 @@ export type Database = {
           incident_id?: string | null
           latitude: number
           location_description?: string | null
+          location_id?: string | null
           longitude: number
           priority_level?: Database["public"]["Enums"]["priority_level"]
           priority_score?: number
@@ -347,6 +419,7 @@ export type Database = {
           incident_id?: string | null
           latitude?: number
           location_description?: string | null
+          location_id?: string | null
           longitude?: number
           priority_level?: Database["public"]["Enums"]["priority_level"]
           priority_score?: number
@@ -362,6 +435,13 @@ export type Database = {
             columns: ["incident_id"]
             isOneToOne: false
             referencedRelation: "incidents"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reports_location_id_fkey"
+            columns: ["location_id"]
+            isOneToOne: false
+            referencedRelation: "locations"
             referencedColumns: ["id"]
           },
           {
@@ -507,6 +587,10 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_add_location_worker: {
+        Args: { _email: string; _location: string }
+        Returns: string
+      }
       admin_assign_worker: {
         Args: { _incident: string; _reason?: string; _worker: string }
         Returns: string
@@ -566,6 +650,12 @@ export type Database = {
         Args: { _action: string; _details: Json; _id: string; _type: string }
         Returns: undefined
       }
+      can_manage_location: { Args: { _location: string }; Returns: boolean }
+      can_manage_worker: { Args: { _user: string }; Returns: boolean }
+      can_user_manage_location: {
+        Args: { _location: string; _user: string }
+        Returns: boolean
+      }
       category_weight: {
         Args: { c: Database["public"]["Enums"]["waste_category"] }
         Returns: number
@@ -612,9 +702,20 @@ export type Database = {
         Returns: undefined
       }
       require_admin: { Args: never; Returns: undefined }
+      require_location: { Args: { _location: string }; Returns: undefined }
+      require_superadmin: { Args: never; Returns: undefined }
       resident_on_incident: {
         Args: { _incident: string; _user: string }
         Returns: boolean
+      }
+      superadmin_create_location: { Args: { _name: string }; Returns: string }
+      superadmin_route_report: {
+        Args: { _location: string; _report: string }
+        Returns: undefined
+      }
+      superadmin_set_local_admin: {
+        Args: { _grant: boolean; _location: string; _user: string }
+        Returns: undefined
       }
       worker_on_incident: {
         Args: { _incident: string; _user: string }

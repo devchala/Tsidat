@@ -29,6 +29,13 @@
       "when": 1792264195145,
       "tag": "0003_add_superadmin_role",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792264314362,
+      "tag": "0004_location_based_administration",
+      "breakpoints": true
     }
   ]
 }

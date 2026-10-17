@@ -7,8 +7,9 @@ export const isAdministrator = (roles: AppRole[]) => isSuperadmin(roles) || role
 export function locationAllowed(roles: AppRole[], assigned: string[], location: string | null) {
   return isSuperadmin(roles) || (roles.includes("admin") && location !== null && assigned.includes(location));
 }
-export const useLocations = () => useQuery({
+export const useLocations = (enabled = true) => useQuery({
   queryKey: ["locations"],
+  enabled,
   queryFn: async () => {
     const { data, error } = await supabase.from("locations").select("id,name").order("name");
     if (error) throw error;

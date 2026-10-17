@@ -38,7 +38,7 @@ export function AppShell() {
       .on("postgres_changes", { event: "*", schema: "public", table: "assignments" }, () => qc.invalidateQueries({ queryKey: ["tasks"] }))
       .subscribe();
     return () => { supabase.removeChannel(ch); };
-  }, [me, qc]);
+  }, [me?.id, qc]);
 
   if (isLoading || !me) {
     return <div className="flex min-h-screen items-center justify-center"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;

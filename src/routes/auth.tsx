@@ -45,7 +45,7 @@ function AuthPage() {
   const navigate = useNavigate();
   const [busy, setBusy] = useState(false);
   const [sent, setSent] = useState<string | null>(null);
-  const locations = useLocations();
+  const locations = useLocations(mode === "worker");
   const [f, setF] = useState({ display_name: "", email: "", password: "", phone: "", location_id: "", national_id: "", experience: "" });
   const set = (k: keyof typeof f) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setF({ ...f, [k]: e.target.value });
 

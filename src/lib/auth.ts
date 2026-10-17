@@ -19,15 +19,18 @@ export type Me = {
 };
 
 export async function fetchMe(): Promise<Me | null> {
-  const { data: u } = await supabase.auth.getUser();
-  if (!u.user) return null;
+  // The managed route guard validates authentication. This browser-only UI
+  // lookup reuses that session; database permissions still enforce access.
+  const { data } = await supabase.auth.getSession();
+  const user = data.session?.user;
+  if (!user) return null;
   const [{ data: profile }, { data: roles }, { data: locations }] = await Promise.all([
-    supabase.from("profiles").select("display_name,phone,area,account_status,worker_status,available,location_id").eq("id", u.user.id).maybeSingle(),
-    supabase.from("user_roles").select("role").eq("user_id", u.user.id),
-    supabase.from("admin_locations").select("location:locations(id,name)").eq("user_id", u.user.id),
+    supabase.from("profiles").select("display_name,phone,area,account_status,worker_status,available,location_id").eq("id", user.id).maybeSingle(),
+    supabase.from("user_roles").select("role").eq("user_id", user.id),
+    supabase.from("admin_locations").select("location:locations(id,name)").eq("user_id", user.id),
   ]);
   if (!profile) return null;
-  return { id: u.user.id, email: u.user.email ?? "", profile, roles: (roles ?? []).map((r) => r.role), locations: (locations ?? []).flatMap((r) => r.location ? [r.location] : []) };
+  return { id: user.id, email: user.email ?? "", profile, roles: (roles ?? []).map((r) => r.role), locations: (locations ?? []).flatMap((r) => r.location ? [r.location] : []) };
 }
 
 export const meQuery = { queryKey: ["me"], queryFn: fetchMe, staleTime: 30_000 };

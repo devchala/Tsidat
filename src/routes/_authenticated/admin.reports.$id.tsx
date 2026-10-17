@@ -9,6 +9,9 @@ import { Textarea } from "@/components/ui/textarea";
 import { PageHeader, Panel, PriorityBadge, SignedImage, StatusBadge, Timeline } from "@/components/tsidat/bits";
 import { PointsMap } from "@/components/tsidat/Maps";
 import { AdminOnly } from "@/components/tsidat/AdminOnly";
+import { useMe } from "@/lib/auth";
+import { useLocations, isSuperadmin } from "@/lib/locations";
+import { LocationSelect } from "@/components/tsidat/LocationSelect";
 
 export const Route = createFileRoute("/_authenticated/admin/reports/$id")({
   head: () => ({ meta: [{ title: "Review report — Tsidat admin" }, { name: "description", content: "Review report evidence." }] }),
@@ -18,6 +21,9 @@ export const Route = createFileRoute("/_authenticated/admin/reports/$id")({
 function Review() {
   const { id } = Route.useParams();
   const qc = useQueryClient();
+  const { data: me } = useMe();
+  const locations = useLocations();
+  const [location, setLocation] = useState("");
   const navigate = useNavigate();
   const [reason, setReason] = useState("");
   const [busy, setBusy] = useState(false);
@@ -30,7 +36,7 @@ function Review() {
       const d = 0.003;
       const [{ data: hist }, { data: near }, { data: reporter }] = await Promise.all([
         supabase.from("status_history").select("id,to_status,note,created_at,actor_role").eq("report_id", id).order("created_at"),
-        supabase.from("incidents").select("id,reference,category,status,priority_level,latitude,longitude").not("status", "in", "(completed,rejected)")
+        supabase.from("incidents").select("id,reference,category,status,priority_level,latitude,longitude").eq("location_id", r.location_id ?? "00000000-0000-0000-0000-000000000000").not("status", "in", "(completed,rejected)")
           .gte("latitude", r.latitude - d).lte("latitude", r.latitude + d).gte("longitude", r.longitude - d).lte("longitude", r.longitude + d),
         supabase.from("profiles").select("display_name").eq("id", r.resident_id).maybeSingle(),
       ]);
@@ -65,6 +71,9 @@ function Review() {
           <PointsMap height="h-64" points={[{ id: r.id, lat: r.latitude, lng: r.longitude, priority: r.priority_level, title: r.reference }, ...near.map((n) => ({ id: n.id, lat: n.latitude, lng: n.longitude, priority: n.priority_level, title: `${n.reference} (incident)` }))]} />
         </div>
         <div className="space-y-4">
+          <div className="space-y-2 border-b pb-4"><p className="text-sm font-semibold">Collection location: {locations.data?.find((l) => l.id === r.location_id)?.name ?? "Unassigned"}</p>
+            {isSuperadmin(me?.roles ?? []) && !r.incident_id && <div className="flex gap-2"><LocationSelect value={location} onChange={setLocation} /><Button variant="outline" disabled={!location || busy} onClick={async () => { setBusy(true); const { error } = await supabase.rpc("superadmin_route_report", { _report: id, _location: location }); setBusy(false); if (error) return toast.error(errMsg(error)); toast.success("Report location updated"); qc.invalidateQueries({ queryKey: ["reports"] }); }}>Save location</Button></div>}
+          </div>
           {r.incident_id && <Panel>Linked to incident <Link to="/admin/incidents/$id" params={{ id: r.incident_id }} className="font-semibold text-primary underline">open incident</Link></Panel>}
           {reviewable && (
             <Panel className="space-y-3">

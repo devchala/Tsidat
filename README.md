@@ -23,6 +23,12 @@ independently (Expo/Metro doesn't play well inside npm workspaces).
 
 ## Getting started
 
+### Prerequisites
+
+- Node.js and npm (use the versions supported by the project dependencies).
+- Docker Desktop, or a local MongoDB instance, for the backend database.
+- Expo Go on a device, or an Android/iOS simulator, to run the mobile app.
+
 ### 1. Backend + Web (from repo root)
 
 ```bash

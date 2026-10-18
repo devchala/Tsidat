@@ -7,7 +7,7 @@ import { AuthContext } from '../context/AuthContext';
 import LoginScreen from '../screens/auth/LoginScreen';
 import CitizenHomeScreen from '../screens/citizen/HomeScreen';
 import ReportIssueScreen from '../screens/citizen/ReportIssueScreen';
-import WorkerDashboardScreen from '../screens/worker/DashboardScreen';
+import WorkerHomeScreen from '../screens/worker/WorkerHomeScreen';
 
 const Stack = createNativeStackNavigator();
 
@@ -32,10 +32,10 @@ export default function RootNavigator() {
           // Worker Protected Flow
           <Stack.Screen
             name="WorkerDashboard"
-            component={WorkerDashboardScreen}
+            component={WorkerHomeScreen}
             options={{
               title: 'Worker Operations',
-              headerStyle: { backgroundColor: '#1565c0' },
+              headerStyle: { backgroundColor: '#0d9488' },
               headerTintColor: '#ffffff',
             }}
           />
@@ -57,6 +57,15 @@ export default function RootNavigator() {
               options={{
                 title: 'Report New Issue',
                 headerStyle: { backgroundColor: '#2e7d32' },
+                headerTintColor: '#ffffff',
+              }}
+            />
+            <Stack.Screen
+              name="WorkerHomeScreen"
+              component={WorkerHomeScreen}
+              options={{
+                title: 'Worker Operations',
+                headerStyle: { backgroundColor: '#0d9488' },
                 headerTintColor: '#ffffff',
               }}
             />

@@ -1,5 +1,5 @@
 # ጽዳት (Tsidat) — Digital Waste Management, Community Reporting & Smart Collection Platform
-
+video link : https://youtu.be/pf-FQ4ZQ2yc?si=5Dzc-ODq3-sAfQt3
 Monorepo for the web + mobile Tsidat platform: a shared Node/Express + MongoDB
 backend, a React (Vite) web app, and an Expo/React Native mobile app.
 
